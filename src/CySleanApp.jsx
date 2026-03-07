@@ -57,10 +57,10 @@ const Tag = ({ children, dark }) => (
     display:"inline-flex",alignItems:"center",gap:8,
     fontFamily:"'Martian Mono',monospace",fontSize:10,letterSpacing:".15em",textTransform:"uppercase",
     color: dark ? "#06101E" : VOLT,
-    border: `1px solid ${dark ? "rgba(6,16,30,.25)" : "rgba(0,229,137,.25)"}`,
-    background: dark ? "rgba(6,16,30,.08)" : "rgba(0,229,137,.04)",
+    border: `1px solid ${dark ? "rgba(6,16,30,.45)" : "rgba(0,229,137,.25)"}`,
+    background: dark ? "rgba(6,16,30,.18)" : "rgba(0,229,137,.04)",
     padding:"5px 14px",marginBottom:22,display:"inline-block"
-  }}>// {children}</span>
+  }}>{children}</span>
 );
 
 /* ══════════════════════════════════════════
@@ -79,7 +79,6 @@ function Nav({ active, setActive }) {
   const links = [
     { id: "servicios", label: "Servicios" },
     { id: "smartgrid", label: "Smart Grid" },
-    { id: "energias", label: "Energías Limpias" },
     { id: "codigored", label: "Código de Red" },
     { id: "casos", label: "Casos" },
     { id: "blog", label: "Blog" },
@@ -243,7 +242,7 @@ function Diferenciador() {
               Somos <em style={{ fontStyle:"normal",color:VOLT }}>integradores</em><br/>energéticos.
             </h2>
             <p style={{ fontSize:15,fontWeight:300,color:SMOKE,lineHeight:1.8,marginBottom:36 }}>
-              La diferencia entre ejecutar y pensar estratégicamente por usted. CySlean Consultoría y Soporte combina diagnóstico técnico, diseño certificado y ejecución con ROI demostrable — antes de firmar cualquier propuesta.
+              Pensamos y ejecutamos estratégicamente por usted. CySlean Consultoría y Soporte combina diagnóstico técnico, diseño certificado y ejecución con ROI demostrable — antes de firmar cualquier propuesta.
             </p>
             <div style={{ display:"flex",flexWrap:"wrap",gap:8 }}>
               {pills.map(p=>(
@@ -279,7 +278,7 @@ function Diferenciador() {
 const SVCS = [
   { n:"01",icon:"⚡",name:"Ingeniería Eléctrica Industrial",desc:"Diseño y análisis completo: cargas, protecciones, distribución de potencia y cumplimiento NOM-001-SEDE.",tags:["NOM-001","Diseño","Protecciones"],feat:false },
   { n:"02",icon:"🏭",name:"Subestaciones y Acometidas",desc:"Diseño, suministro e instalación de subestaciones MT/AT, acometidas y distribución industrial.",tags:["MT/AT","CFE","Transformadores"],feat:false },
-  { n:"03",icon:"📐",name:"Corrección de Factor de Potencia",desc:"Análisis de armónicos, bancos de capacitores y compensación reactiva. Eliminamos penalizaciones CFE.",tags:["FP > 0.97","THD","Ahorro CFE"],feat:true },
+  { n:"03",icon:"📐",name:"Corrección de Factor de Potencia",desc:"Análisis de armónicos, bancos de capacitores y compensación reactiva. Eliminamos penalizaciones CFE.",tags:["FP > 0.97","THD","Ahorro CFE"],feat:false },
   { n:"04",icon:"☀️",name:"Energías Limpias FV / Eólica",desc:"Integración fotovoltaica industrial en modalidades aislada, interconectada e híbrida. Gestión CRE.",tags:["Solar","Eólica","CRE"],feat:false },
   { n:"05",icon:"🔋",name:"Sistemas BESS Industriales",desc:"Almacenamiento de energía para peak shaving, respaldo ante fallas CFE y arbitraje tarifario.",tags:["Peak Shaving","LFP","BMS"],feat:false },
   { n:"06",icon:"⚙️",name:"Automatización PLC / SCADA",desc:"Sistemas de control industrial: PLC Siemens/Allen-Bradley/Schneider, SCADA en tiempo real.",tags:["Siemens","Rockwell","Modbus"],feat:false },
@@ -433,219 +432,6 @@ function SmartGrid() {
 }
 
 /* ══════════════════════════════════════════
-   ENERGÍAS LIMPIAS
-══════════════════════════════════════════ */
-function EnergiasLimpias() {
-  const [hovMod, setHovMod] = useState(null);
-  const [hovProc, setHovProc] = useState(null);
-  const scroll = () => document.getElementById("contacto")?.scrollIntoView({ behavior:"smooth", block:"start" });
-
-  const modalidades = [
-    {
-      icon:"🏭", name:"Generación Distribuida", tag:"≤ 500 kW",
-      desc:"Sin permiso CRE. Trámite simplificado ante CFE. Excedentes inyectados bajo tarifas reguladas. Ideal para PYMES, naves y parques industriales.",
-      pros:["Sin permiso CRE para proyectos ≤ 500 kW","Recuperación de inversión: 3–6 años","Aplica en PDBT, GDBT, GDMTH, HM","Medidor bidireccional homologado CFE"]
-    },
-    {
-      icon:"⚡", name:"Autoabastecimiento", tag:"500 kW – 30 MW",
-      desc:"Permiso CRE obligatorio. Para grandes consumidores. Posibilidad de venta de excedentes en el Mercado Eléctrico Mayorista y emisión de CELs.",
-      pros:["Gestión permiso CRE — proceso completo","Venta de Certificados de Energía Limpia (CELs)","Ahorro en cargos de transmisión CFE","Compatible con tarifa HS y HM industrial"]
-    },
-    {
-      icon:"🔋", name:"FV + BESS (Híbrido)", tag:"Cualquier escala",
-      desc:"Fotovoltaico + almacenamiento. Autoconsumo real mayor al 90%, peak shaving en tarifa HS/HM y respaldo ante cortes CFE.",
-      pros:["Autoconsumo real > 90%","Elimina pico de demanda facturable","Respaldo ante microcortes y fallas CFE","ROI acelerado en tarifa HS/HM"]
-    },
-    {
-      icon:"💨", name:"Energía Eólica", tag:"Viento > 6 m/s",
-      desc:"Aerogeneradores 50 kW – 2 MW. Complementa generación solar en ciclos nocturnos o temporadas de baja irradiación solar.",
-      pros:["Generación nocturna complementaria","Factor de capacidad 30–40% en zonas óptimas","Vida útil 20–25 años","Requiere estudio de recurso eólico en sitio"]
-    },
-  ];
-
-  const proceso = [
-    { n:"01", name:"Diagnóstico Energético",     desc:"Medición de demanda y consumo 15 días. Análisis de tarifa, perfil de carga y potencial de generación en sitio." },
-    { n:"02", name:"Estudio de Factibilidad",    desc:"Irradiancia solar o recurso eólico, cálculo de producción anual, análisis financiero con TIR, VPN y payback." },
-    { n:"03", name:"Ingeniería y Diseño",        desc:"Dimensionamiento del sistema, planos eléctricos, memoria de cálculo, layout estructural y selección de equipos TIER-1." },
-    { n:"04", name:"Gestión Normativa",          desc:"Trámites CFE (interconexión, medidor), permiso CRE si aplica, cumplimiento Código de Red y NOM-001-SEDE." },
-    { n:"05", name:"Instalación e Integración",  desc:"Suministro, montaje, cableado DC/AC, inversores, protecciones, coordinación con BESS si aplica y puesta en marcha." },
-    { n:"06", name:"Monitoreo y Soporte",        desc:"Plataforma IoT: producción, consumo, autoconsumo, inyección y alertas. Mantenimiento preventivo anual." },
-  ];
-
-  const normas = [
-    { code:"NOM-001-SEDE",  desc:"Instalaciones eléctricas. Aplica a todo el sistema de interconexión del generador." },
-    { code:"Código de Red", desc:"Protecciones anti-isla, FP ≥ 0.90, THD ≤ 5%, medición bidireccional homologada." },
-    { code:"NOM-117-SCFI",  desc:"Medidores bidireccionales homologados CFE para generación distribuida." },
-    { code:"IEEE 1547",     desc:"Estándar internacional de interconexión de recursos energéticos distribuidos." },
-    { code:"Permiso CRE",   desc:"Obligatorio para proyectos > 500 kW bajo modalidad de autoabastecimiento." },
-  ];
-
-  const metrics = [
-    { val:"40–70%",    label:"Reducción factura CFE",     note:"FV bien dimensionado"      },
-    { val:"3–6 años",  label:"Payback Generación Distribuida", note:"Tarifa HM / GDMTH"   },
-    { val:"25 años",   label:"Vida útil módulos TIER-1",  note:"Con garantía de potencia"  },
-    { val:"-65%",      label:"Caída costo kWp",           note:"Módulos FV 2015 → 2025"    },
-  ];
-
-  return (
-    <section id="energias" style={{ padding:"130px 0",background:INK2,position:"relative",overflow:"hidden" }}>
-      <div style={{ position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(0,229,137,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,137,.025) 1px,transparent 1px)",backgroundSize:"72px 72px" }}/>
-      <div style={{ position:"absolute",right:"-10%",top:"20%",width:700,height:700,borderRadius:"50%",background:"radial-gradient(circle,rgba(0,87,255,.05) 0%,transparent 65%)",pointerEvents:"none" }}/>
-
-      <div style={{ maxWidth:1240,margin:"0 auto",padding:"0 32px",position:"relative",zIndex:2 }}>
-
-        {/* Header */}
-        <Fade>
-          <Tag>Energías Renovables · FV · Eólica · Híbridos</Tag>
-          <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:64,flexWrap:"wrap",gap:32 }}>
-            <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(38px,4.8vw,62px)",fontWeight:800,lineHeight:.93,letterSpacing:"-.04em" }}>
-              Energías<br/><em style={{ fontStyle:"normal",color:VOLT }}>Limpias</em><br/>Industriales.
-            </h2>
-            <p style={{ fontSize:15,fontWeight:300,color:SMOKE,maxWidth:380,lineHeight:1.8,textAlign:"right" }}>
-              Diseñamos, gestionamos e integramos sistemas fotovoltaicos, eólicos e híbridos — con permiso CRE, cumplimiento Código de Red y ROI cuantificado antes de firmar.
-            </p>
-          </div>
-        </Fade>
-
-        {/* Key metrics */}
-        <Fade delay={0.05}>
-          <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:1,background:"rgba(255,255,255,.06)",marginBottom:80 }}>
-            {metrics.map((m,i)=>(
-              <div key={i} style={{ background:INK,padding:"32px 28px",position:"relative",overflow:"hidden" }}>
-                <div style={{ position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,"+VOLT+",transparent)" }}/>
-                <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".12em",textTransform:"uppercase",color:SMOKE,marginBottom:8 }}>{m.label}</div>
-                <div style={{ fontFamily:"'Syne',sans-serif",fontSize:30,fontWeight:800,color:VOLT,lineHeight:1,letterSpacing:"-.03em",marginBottom:6 }}>{m.val}</div>
-                <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,color:"rgba(0,229,137,.4)",letterSpacing:".07em" }}>{m.note}</div>
-              </div>
-            ))}
-          </div>
-        </Fade>
-
-        {/* Modalidades */}
-        <Fade>
-          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,letterSpacing:".14em",textTransform:"uppercase",color:SMOKE,marginBottom:24 }}>Modalidades de Integración</div>
-        </Fade>
-        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",marginBottom:80 }}>
-          {modalidades.map((m,i)=>(
-            <Fade key={i} delay={i*.06}>
-              <div onMouseEnter={()=>setHovMod(i)} onMouseLeave={()=>setHovMod(null)}
-                style={{ background: hovMod===i ? INK : INK2,padding:"40px 36px",position:"relative",overflow:"hidden",transition:"background .3s",height:"100%" }}>
-                <div style={{ position:"absolute",top:0,left:0,right:0,height:2,background:VOLT,transform: hovMod===i ? "scaleX(1)" : "scaleX(0)",transformOrigin:"left",transition:"transform .45s cubic-bezier(.16,1,.3,1)" }}/>
-                <div style={{ display:"flex",alignItems:"center",gap:14,marginBottom:16 }}>
-                  <span style={{ fontSize:30,transition:"transform .35s",transform: hovMod===i ? "scale(1.12) rotate(-5deg)" : "scale(1)" }}>{m.icon}</span>
-                  <div>
-                    <div style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,letterSpacing:"-.02em",lineHeight:1.15 }}>{m.name}</div>
-                    <span style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,padding:"2px 8px",border:"1px solid rgba(0,229,137,.25)",color:VOLT,letterSpacing:".08em",marginTop:4,display:"inline-block" }}>{m.tag}</span>
-                  </div>
-                </div>
-                <p style={{ fontSize:13,color:SMOKE,lineHeight:1.75,marginBottom:16 }}>{m.desc}</p>
-                <div style={{ display:"flex",flexDirection:"column",gap:7 }}>
-                  {m.pros.map((p,j)=>(
-                    <div key={j} style={{ display:"flex",alignItems:"flex-start",gap:10,fontSize:12,color:SMOKE,lineHeight:1.5 }}>
-                      <span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:1 }}>▸</span>{p}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Fade>
-          ))}
-        </div>
-
-        {/* Proceso + SVG */}
-        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:80,alignItems:"start",marginBottom:80 }}>
-          <Fade dir="left">
-            <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,letterSpacing:".14em",textTransform:"uppercase",color:SMOKE,marginBottom:28 }}>Nuestro Proceso — 6 Etapas</div>
-            {proceso.map((p,i)=>(
-              <div key={i} onMouseEnter={()=>setHovProc(i)} onMouseLeave={()=>setHovProc(null)}
-                style={{ display:"flex",alignItems:"flex-start",gap:18,padding: hovProc===i ? "18px 0 18px 14px" : "18px 0",borderBottom:"1px solid rgba(255,255,255,.06)",transition:"padding .35s cubic-bezier(.16,1,.3,1)",position:"relative" }}>
-                <div style={{ position:"absolute",left:0,top:0,bottom:0,width:2,background:VOLT,transform: hovProc===i ? "scaleY(1)" : "scaleY(0)",transformOrigin:"top",transition:"transform .35s cubic-bezier(.16,1,.3,1)" }}/>
-                <div style={{ fontFamily:"'Syne',sans-serif",fontSize:32,fontWeight:800,color:VOLT,opacity: hovProc===i ? .55 : .18,lineHeight:1,flexShrink:0,width:44,transition:"opacity .35s" }}>{p.n}</div>
-                <div>
-                  <div style={{ fontFamily:"'Syne',sans-serif",fontSize:15,fontWeight:700,marginBottom:4 }}>{p.name}</div>
-                  <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65 }}>{p.desc}</div>
-                </div>
-              </div>
-            ))}
-          </Fade>
-
-          <Fade dir="right" delay={0.1}>
-            <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width:"100%",maxWidth:420,display:"block",margin:"0 auto" }}>
-              <circle cx="210" cy="210" r="178" stroke="#00E589" strokeOpacity=".05" strokeWidth="1"/>
-              <circle cx="210" cy="210" r="128" stroke="#00E589" strokeOpacity=".08" strokeWidth="1" strokeDasharray="6 8"/>
-              <circle cx="210" cy="210" r="80"  stroke="#00E589" strokeOpacity=".13" strokeWidth="1" strokeDasharray="4 6"/>
-              <circle cx="210" cy="210" r="50" fill="url(#elgr)"/>
-              <defs>
-                <radialGradient id="elgr" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#00E589" stopOpacity=".2"/>
-                  <stop offset="100%" stopColor="#00E589" stopOpacity="0"/>
-                </radialGradient>
-              </defs>
-              <polygon points="210,188 226,197 226,215 210,224 194,215 194,197" fill="#0D1F35" stroke="#00E589" strokeWidth="1.5"/>
-              <text x="210" y="207" textAnchor="middle" fill="#00E589" fontFamily="Syne" fontSize="8" fontWeight="700">100%</text>
-              <text x="210" y="219" textAnchor="middle" fill="#00E589" fontFamily="Syne" fontSize="8" fontWeight="700">Limpia</text>
-              {[["210,188","210,82"],["226,197","322,142"],["226,215","322,278"],["210,224","210,338"],["194,215","98,278"],["194,197","98,142"]].map(([a,b],i)=>(
-                <line key={i} x1={a.split(",")[0]} y1={a.split(",")[1]} x2={b.split(",")[0]} y2={b.split(",")[1]} stroke="#00E589" strokeOpacity=".2" strokeWidth="1" strokeDasharray="4 5"/>
-              ))}
-              {[["210","68","☀️","Solar FV"],["334","128","💨","Eólica"],["334","292","🔋","BESS"],["210","352","🏭","Planta"],["86","292","⚙️","SCADA"],["86","128","🌐","Smart Grid"]].map(([cx,cy,icon,lbl],i)=>(
-                <g key={i}>
-                  <circle cx={cx} cy={cy} r="26" fill="#0A1929" stroke="#00E589" strokeWidth="1.5"/>
-                  <text x={cx} y={String(+cy-4)} textAnchor="middle" fontSize="14">{icon}</text>
-                  <text x={cx} y={String(+cy+10)} textAnchor="middle" fill="white" fontFamily="Syne" fontSize="8" fontWeight="700">{lbl}</text>
-                </g>
-              ))}
-              {[["M210,188 L210,94","1.9s"],["M226,197 L314,152","2.5s"],["M194,215 L106,270","3s"],["M226,215 L314,268","3.5s"],["M210,224 L210,326","4s"]].map(([path,dur],i)=>(
-                <circle key={i} r={i===0?4:3} fill="#00E589" opacity={i===0?.9:.6}>
-                  <animateMotion dur={dur} repeatCount="indefinite" path={path}/>
-                </circle>
-              ))}
-            </svg>
-
-            {/* ROI strip */}
-            <div style={{ marginTop:24,padding:"20px 24px",border:"1px solid rgba(0,229,137,.18)",background:"rgba(0,229,137,.04)",display:"grid",gridTemplateColumns:"1fr 1fr 1fr" }}>
-              {[{v:"3–6 años",l:"Payback GD típico"},{v:"40–70%",l:"Reducción factura"},{v:"25 años",l:"Vida útil paneles"}].map((s,i)=>(
-                <div key={i} style={{ textAlign:"center",padding:"4px 0",borderRight: i<2 ? "1px solid rgba(0,229,137,.12)" : "none" }}>
-                  <div style={{ fontFamily:"'Syne',sans-serif",fontSize:20,fontWeight:800,color:VOLT,letterSpacing:"-.02em" }}>{s.v}</div>
-                  <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,color:SMOKE,marginTop:3,letterSpacing:".06em" }}>{s.l}</div>
-                </div>
-              ))}
-            </div>
-          </Fade>
-        </div>
-
-        {/* Normatividad */}
-        <Fade>
-          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,letterSpacing:".14em",textTransform:"uppercase",color:SMOKE,marginBottom:20 }}>Normatividad y Cumplimiento</div>
-          <div style={{ display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:1,background:"rgba(255,255,255,.06)",marginBottom:64 }}>
-            {normas.map((n,i)=>(
-              <div key={i} style={{ background:INK,padding:"22px 18px",textAlign:"center" }}>
-                <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,fontWeight:700,color:VOLT,marginBottom:8,letterSpacing:".06em" }}>{n.code}</div>
-                <div style={{ fontSize:11,color:SMOKE,lineHeight:1.55 }}>{n.desc}</div>
-              </div>
-            ))}
-          </div>
-        </Fade>
-
-        {/* CTA strip */}
-        <Fade>
-          <div style={{ padding:"40px 48px",border:"1px solid rgba(0,229,137,.2)",background:"rgba(0,229,137,.04)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:32,flexWrap:"wrap" }}>
-            <div>
-              <div style={{ fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:700,letterSpacing:"-.02em" }}>¿Su planta está lista para energías renovables?</div>
-              <div style={{ fontSize:14,color:SMOKE,marginTop:6,lineHeight:1.6 }}>CySlean Consultoría y Soporte realiza el estudio de factibilidad técnica y financiera en 5 días hábiles.</div>
-            </div>
-            <button onClick={scroll} style={{ display:"flex",alignItems:"center",gap:10,background:VOLT,color:INK,fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,letterSpacing:".06em",textTransform:"uppercase",padding:"17px 34px",border:"none",cursor:"pointer",transition:"background .2s,transform .2s",whiteSpace:"nowrap" }}
-              onMouseEnter={e=>{e.currentTarget.style.background="#00f094";e.currentTarget.style.transform="translateY(-2px)"}}
-              onMouseLeave={e=>{e.currentTarget.style.background=VOLT;e.currentTarget.style.transform="none"}}>
-              ☀️ Solicitar Estudio de Factibilidad →
-            </button>
-          </div>
-        </Fade>
-      </div>
-    </section>
-  );
-}
-
-
-/* ══════════════════════════════════════════
    CÓDIGO DE RED
 ══════════════════════════════════════════ */
 function CodigoRed() {
@@ -791,15 +577,15 @@ function DiagnosticoCTA() {
   ];
   const scroll = () => document.getElementById("contacto")?.scrollIntoView({ behavior:"smooth" });
   return (
-    <section style={{ background:VOLT,position:"relative",overflow:"hidden" }}>
-      <div style={{ position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(6,16,30,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(6,16,30,.07) 1px,transparent 1px)",backgroundSize:"48px 48px" }}/>
+    <section style={{ background:INK3,position:"relative",overflow:"hidden" }}>
+      <div style={{ position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(0,229,137,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,137,.04) 1px,transparent 1px)",backgroundSize:"48px 48px" }}/>
       <div style={{ maxWidth:1240,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",position:"relative",zIndex:1 }}>
         <div style={{ padding:"96px 72px 96px 32px" }}>
-          <Tag dark>Diagnóstico Energético — CySlean Consultoría y Soporte</Tag>
-          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(34px,4.2vw,56px)",fontWeight:800,lineHeight:.95,letterSpacing:"-.04em",color:INK,marginBottom:22 }}>
-            ¿Cuánto le está<br/>costando<br/>no actuar?
+          <Tag>Diagnóstico Energético — CySlean Consultoría y Soporte</Tag>
+          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(34px,4.2vw,56px)",fontWeight:800,lineHeight:.95,letterSpacing:"-.04em",marginBottom:22 }}>
+            ¿Cuánto le está<br/>costando<br/><em style={{ fontStyle:"normal",color:VOLT }}>no actuar?</em>
           </h2>
-          <p style={{ fontSize:15,color:"rgba(6,16,30,.62)",lineHeight:1.75,marginBottom:32 }}>
+          <p style={{ fontSize:15,color:SMOKE,lineHeight:1.75,marginBottom:32 }}>
             El Diagnóstico Energético CySlean Consultoría y Soporte (DEC) es una auditoría técnica completa de su instalación eléctrica. En 5 días hábiles tiene un informe técnico con los números sobre la mesa.
           </p>
           <button onClick={scroll} style={{ display:"inline-flex",alignItems:"center",gap:10,background:INK,color:VOLT,fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:"17px 34px",border:"none",cursor:"pointer",transition:"background .2s,transform .2s" }}
@@ -808,11 +594,11 @@ function DiagnosticoCTA() {
             ⚡ Solicitar Diagnóstico Energético
           </button>
         </div>
-        <div style={{ padding:"96px 32px 96px 72px",background:"rgba(6,16,30,.08)",borderLeft:"1px solid rgba(6,16,30,.1)" }}>
+        <div style={{ padding:"96px 32px 96px 72px",background:"rgba(255,255,255,.03)",borderLeft:"1px solid rgba(255,255,255,.07)" }}>
           <ul style={{ listStyle:"none",padding:0,margin:0 }}>
             {items.map((it,i)=>(
-              <li key={i} style={{ display:"flex",alignItems:"flex-start",gap:14,padding:"16px 0",borderBottom:"1px solid rgba(6,16,30,.1)",fontSize:14,color:"rgba(6,16,30,.72)",lineHeight:1.5 }}>
-                <div style={{ width:22,height:22,borderRadius:"50%",background:"rgba(6,16,30,.13)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:11,fontWeight:800,color:INK }}>✓</div>
+              <li key={i} style={{ display:"flex",alignItems:"flex-start",gap:14,padding:"16px 0",borderBottom:"1px solid rgba(255,255,255,.07)",fontSize:14,color:SMOKE,lineHeight:1.5 }}>
+                <div style={{ width:22,height:22,borderRadius:"50%",background:"rgba(0,229,137,.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:11,fontWeight:800,color:VOLT }}>✓</div>
                 {it}
               </li>
             ))}
@@ -841,7 +627,7 @@ function Casos() {
         <Fade>
           <Tag>Resultados Reales</Tag>
           <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(38px,4.8vw,60px)",fontWeight:800,lineHeight:.95,letterSpacing:"-.04em",marginBottom:64 }}>
-            Casos de <em style={{ fontStyle:"normal",color:VOLT }}>éxito</em><br/>que hablan solos.
+            Casos de <em style={{ fontStyle:"normal",color:VOLT }}>éxito.</em>
           </h2>
         </Fade>
         <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:2,background:"rgba(255,255,255,.06)" }}>
@@ -1023,180 +809,6 @@ const FP_ARTICLE = {
   ]
 };
 
-function ArticleModal({ onClose }) {
-  const [openFaq, setOpenFaq] = useState(null);
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
-  const scrollContact = () => {
-    onClose();
-    setTimeout(() => document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" }), 300);
-  };
-
-  return (
-    <div style={{ position:"fixed",inset:0,zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",padding:"40px 20px" }}>
-      {/* Backdrop */}
-      <div onClick={onClose} style={{ position:"fixed",inset:0,background:"rgba(4,11,22,.95)",backdropFilter:"blur(14px)",zIndex:-1 }}/>
-
-      {/* Modal card */}
-      <div style={{ width:"100%",maxWidth:840,background:INK2,border:"1px solid rgba(0,229,137,.2)",position:"relative",animation:"fup .42s cubic-bezier(.16,1,.3,1) both",marginBottom:48 }}>
-
-        {/* ── Header ── */}
-        <div style={{ background:VOLT,padding:"32px 48px 28px",position:"relative" }}>
-          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".16em",textTransform:"uppercase",color:"rgba(6,16,30,.5)",marginBottom:10 }}>
-            Factor de Potencia · Eficiencia · CFE · 8 min lectura
-          </div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(20px,3vw,29px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-.03em",color:INK,maxWidth:640,paddingRight:44 }}>
-            Factor de Potencia CFE: ¿Cuánto le Cuesta a su Planta no Corregirlo en 2026?
-          </h2>
-          <div style={{ marginTop:12,fontFamily:"'Martian Mono',monospace",fontSize:9,color:"rgba(6,16,30,.45)",letterSpacing:".1em" }}>
-            Palabras clave: penalización CFE · banco de capacitores · corrección factor de potencia · ahorro energía industrial
-          </div>
-          <button onClick={onClose}
-            style={{ position:"absolute",top:20,right:20,background:INK,border:"none",color:VOLT,width:36,height:36,fontSize:17,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,lineHeight:1,transition:"background .2s" }}
-            onMouseEnter={e=>e.currentTarget.style.background=INK3}
-            onMouseLeave={e=>e.currentTarget.style.background=INK}>✕</button>
-        </div>
-
-        {/* ── Body ── */}
-        <div style={{ padding:"0 0 0 0" }}>
-          {FP_ARTICLE.sections.map((sec, si) => (
-            <div key={si} style={{ padding:"36px 48px",borderBottom:"1px solid rgba(255,255,255,.05)" }}>
-
-              {/* Section title */}
-              <h3 style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,letterSpacing:"-.02em",marginBottom:14,paddingBottom:10,borderBottom:`1px solid ${si===0 ? VOLT : "rgba(255,255,255,.07)"}`,color: si===0 ? VOLT : "white",lineHeight:1.25 }}>
-                {sec.title}
-              </h3>
-
-              {/* Content text */}
-              {sec.content && (
-                <p style={{ fontSize:14,color:SMOKE,lineHeight:1.82,marginBottom:(sec.formula||sec.table||sec.highlight||sec.list||sec.solutions||sec.callout) ? 18 : 0 }}>
-                  {sec.content}
-                </p>
-              )}
-
-              {/* Formula box */}
-              {sec.formula && (
-                <div style={{ background:INK3,border:"1px solid rgba(0,229,137,.22)",padding:"14px 22px",fontFamily:"'Martian Mono',monospace",fontSize:16,color:VOLT,letterSpacing:".08em",marginBottom: sec.highlight ? 18 : 0 }}>
-                  {sec.formula}
-                </div>
-              )}
-
-              {/* Table */}
-              {sec.table && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr 1.2fr 1.1fr",background:INK3 }}>
-                    {sec.table.head.map((h,j) => (
-                      <div key={j} style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color: j===2 ? VOLT : SMOKE,borderRight: j<2 ? "1px solid rgba(255,255,255,.06)" : "none" }}>{h}</div>
-                    ))}
-                  </div>
-                  {sec.table.rows.map((row,j) => (
-                    <div key={j} style={{ display:"grid",gridTemplateColumns:"1fr 1.2fr 1.1fr",borderTop:"1px solid rgba(255,255,255,.05)" }}>
-                      <div style={{ padding:"11px 16px",fontFamily:"'Martian Mono',monospace",fontSize:11,color:VOLT,letterSpacing:".05em",borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[0]}</div>
-                      <div style={{ padding:"11px 16px",fontSize:13,borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[1]}</div>
-                      <div style={{ padding:"11px 16px",fontSize:12,color:SMOKE }}>{row[2]}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Highlight metrics */}
-              {sec.highlight && (
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.highlight.map((h,j) => (
-                    <div key={j} style={{ background:INK3,padding:"18px 22px" }}>
-                      <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".12em",textTransform:"uppercase",color:SMOKE,marginBottom:5 }}>{h.label}</div>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,color:VOLT,letterSpacing:"-.02em" }}>{h.value}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Note / italic callout */}
-              {sec.note && (
-                <p style={{ fontSize:13,color:VOLT,fontFamily:"'Syne',sans-serif",fontWeight:600,fontStyle:"italic",marginTop:14,lineHeight:1.5 }}>{sec.note}</p>
-              )}
-
-              {/* Green callout box */}
-              {sec.callout && (
-                <div style={{ marginTop:14,padding:"16px 20px",background:"rgba(0,229,137,.07)",border:"1px solid rgba(0,229,137,.22)",fontSize:14,fontWeight:600,color:VOLT,fontFamily:"'Syne',sans-serif",lineHeight:1.5 }}>
-                  {sec.callout}
-                </div>
-              )}
-
-              {/* Bullet list */}
-              {sec.list && (
-                <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:9 }}>
-                  {sec.list.map((item,j) => (
-                    <li key={j} style={{ display:"flex",alignItems:"flex-start",gap:12,fontSize:14,color:SMOKE,lineHeight:1.65 }}>
-                      <span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:2 }}>▸</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* Solutions 2-col grid */}
-              {sec.solutions && (
-                <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.solutions.map((s,j) => (
-                    <div key={j} style={{ background:INK3,padding:"20px 24px" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,marginBottom:8,color:VOLT }}>{s.name}</div>
-                      <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65 }}>{s.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* FAQ accordion */}
-              {sec.faq && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
-                  {sec.faq.map((item,j) => (
-                    <div key={j} style={{ borderBottom: j < sec.faq.length-1 ? "1px solid rgba(255,255,255,.07)" : "none" }}>
-                      <button
-                        onClick={() => setOpenFaq(openFaq === j ? null : j)}
-                        style={{ width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,padding:"16px 20px",background: openFaq===j ? INK3 : "transparent",border:"none",cursor:"pointer",textAlign:"left",transition:"background .25s" }}
-                        onMouseEnter={e=>{ if(openFaq!==j) e.currentTarget.style.background="rgba(255,255,255,.025)"; }}
-                        onMouseLeave={e=>{ if(openFaq!==j) e.currentTarget.style.background="transparent"; }}>
-                        <span style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:600,color:"white",lineHeight:1.4 }}>{item.q}</span>
-                        <span style={{ color:VOLT,fontSize:22,flexShrink:0,display:"inline-block",transform: openFaq===j ? "rotate(45deg)" : "rotate(0deg)",transition:"transform .3s cubic-bezier(.16,1,.3,1)",lineHeight:1 }}>+</span>
-                      </button>
-                      {openFaq === j && (
-                        <div style={{ padding:"0 20px 16px",fontSize:13,color:SMOKE,lineHeight:1.8,animation:"fup .28s cubic-bezier(.16,1,.3,1) both" }}>
-                          {item.a}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-
-          {/* ── Article footer CTA ── */}
-          <div style={{ margin:"0",background:VOLT,padding:"28px 48px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap" }}>
-            <div>
-              <div style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:800,color:INK,letterSpacing:"-.02em" }}>
-                ¿Su planta tiene bajo Factor de Potencia?
-              </div>
-              <div style={{ fontSize:13,color:"rgba(6,16,30,.62)",marginTop:4,lineHeight:1.5 }}>
-                CySlean Consultoría y Soporte realiza el diagnóstico técnico de su instalación.
-              </div>
-            </div>
-            <button onClick={scrollContact}
-              style={{ display:"inline-flex",alignItems:"center",gap:8,background:INK,color:VOLT,fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:"13px 26px",border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"background .2s,transform .2s" }}
-              onMouseEnter={e=>{e.currentTarget.style.background=INK3;e.currentTarget.style.transform="translateY(-1px)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background=INK;e.currentTarget.style.transform="none";}}>
-              ⚡ Solicitar Diagnóstico
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
 /* ── Article: Sistemas BESS Industrial ─────────────────────────── */
 const BESS_ARTICLE = {
   sections: [
@@ -1351,233 +963,6 @@ const BESS_ARTICLE = {
     },
   ]
 };
-
-function BESSModal({ onClose }) {
-  const [openCheck, setOpenCheck] = useState(null);
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
-  const scrollContact = () => {
-    onClose();
-    setTimeout(() => document.getElementById("contacto")?.scrollIntoView({ behavior:"smooth" }), 300);
-  };
-
-  return (
-    <div style={{ position:"fixed",inset:0,zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",padding:"40px 20px" }}>
-      <div onClick={onClose} style={{ position:"fixed",inset:0,background:"rgba(4,11,22,.95)",backdropFilter:"blur(14px)",zIndex:-1 }}/>
-      <div style={{ width:"100%",maxWidth:840,background:INK2,border:"1px solid rgba(0,229,137,.2)",position:"relative",animation:"fup .42s cubic-bezier(.16,1,.3,1) both",marginBottom:48 }}>
-
-        {/* Header */}
-        <div style={{ background:VOLT,padding:"32px 48px 28px",position:"relative" }}>
-          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".16em",textTransform:"uppercase",color:"rgba(6,16,30,.5)",marginBottom:10 }}>
-            BESS · Almacenamiento · Tarifas HM/HS · 12 min lectura
-          </div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(20px,3vw,29px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-.03em",color:INK,maxWidth:640,paddingRight:44 }}>
-            Sistemas BESS Industrial: Guía Técnica Completa México 2025
-          </h2>
-          <div style={{ marginTop:10,fontFamily:"'Martian Mono',monospace",fontSize:9,color:"rgba(6,16,30,.45)",letterSpacing:".1em" }}>
-            Tecnologías · Financiamiento · ROI en tarifa HM/HS · Técnico / Ejecutivo
-          </div>
-          <button onClick={onClose}
-            style={{ position:"absolute",top:20,right:20,background:INK,border:"none",color:VOLT,width:36,height:36,fontSize:17,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,lineHeight:1,transition:"background .2s" }}
-            onMouseEnter={e=>e.currentTarget.style.background=INK3}
-            onMouseLeave={e=>e.currentTarget.style.background=INK}>✕</button>
-        </div>
-
-        {/* Intro strip */}
-        <div style={{ padding:"24px 48px",background:INK3,borderBottom:"1px solid rgba(255,255,255,.06)",fontSize:14,color:SMOKE,lineHeight:1.75 }}>
-          El almacenamiento energético con baterías ya no es tecnología experimental en México. En 2025, los Sistemas BESS se están convirtiendo en una herramienta estratégica para plantas industriales que buscan reducir costos en tarifas HM/HS, gestionar demanda máxima, integrar energía solar y mejorar resiliencia operativa.
-        </div>
-
-        {/* Body */}
-        <div>
-          {BESS_ARTICLE.sections.map((sec, si) => (
-            <div key={si} style={{ padding:"36px 48px",borderBottom:"1px solid rgba(255,255,255,.05)" }}>
-
-              <h3 style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,letterSpacing:"-.02em",marginBottom:14,paddingBottom:10,borderBottom:`1px solid ${si===0 ? VOLT : "rgba(255,255,255,.07)"}`,color: si===0 ? VOLT : "white",lineHeight:1.25 }}>
-                {sec.title}
-              </h3>
-
-              {sec.content && <p style={{ fontSize:14,color:SMOKE,lineHeight:1.82,marginBottom:18 }}>{sec.content}</p>}
-
-              {/* BESS component cards */}
-              {sec.components && (
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.components.map((comp,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 14px",textAlign:"center" }}>
-                      <div style={{ fontSize:24,marginBottom:8 }}>{comp.icon}</div>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,color:VOLT,marginBottom:5,lineHeight:1.2 }}>{comp.name}</div>
-                      <div style={{ fontSize:11,color:SMOKE,lineHeight:1.5 }}>{comp.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Applications */}
-              {sec.apps && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.apps.map((app,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"22px 24px",display:"flex",gap:20,alignItems:"flex-start" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:VOLT,opacity:.25,lineHeight:1,flexShrink:0,width:40 }}>{app.num}</div>
-                      <div style={{ flex:1 }}>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:15,fontWeight:700,marginBottom:6,color:"white" }}>{app.name}</div>
-                        <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65,marginBottom: app.highlight ? 14 : 0 }}>{app.desc}</div>
-                        {app.highlight && (
-                          <div style={{ display:"flex",gap:1,background:"rgba(255,255,255,.06)" }}>
-                            {app.highlight.map((h,k)=>(
-                              <div key={k} style={{ background:INK,padding:"10px 14px",flex:1 }}>
-                                <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,letterSpacing:".1em",color:SMOKE,marginBottom:4,textTransform:"uppercase" }}>{h.label}</div>
-                                <div style={{ fontFamily:"'Syne',sans-serif",fontSize:18,fontWeight:800,color:VOLT }}>{h.value}</div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        {app.note && <div style={{ fontSize:12,color:VOLT,fontStyle:"italic",marginTop:10 }}>{app.note}</div>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Table */}
-              {sec.table && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden",marginBottom: sec.note ? 14 : 0 }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1.4fr",background:INK3 }}>
-                    {sec.table.head.map((h,j)=>(
-                      <div key={j} style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color: j===0 ? VOLT : SMOKE,borderRight: j<3 ? "1px solid rgba(255,255,255,.06)" : "none" }}>{h}</div>
-                    ))}
-                  </div>
-                  {sec.table.rows.map((row,j)=>(
-                    <div key={j} style={{ display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1.4fr",borderTop:"1px solid rgba(255,255,255,.05)" }}>
-                      {row.map((cell,k)=>(
-                        <div key={k} style={{ padding:"11px 16px",fontSize: k===0 ? 13 : 12,color: k===0 ? VOLT : k===2 ? "white" : SMOKE,fontFamily: k===0 ? "'Syne',sans-serif" : "'DM Sans',sans-serif",fontWeight: k===0 ? 700 : 400,borderRight: k<3 ? "1px solid rgba(255,255,255,.05)" : "none",lineHeight:1.4 }}>{cell}</div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {sec.note && <p style={{ fontSize:13,color:VOLT,fontFamily:"'Syne',sans-serif",fontWeight:600,fontStyle:"italic",marginTop: sec.table ? 0 : 10,lineHeight:1.5 }}>{sec.note}</p>}
-
-              {sec.callout && (
-                <div style={{ marginTop:14,padding:"16px 20px",background:"rgba(0,229,137,.07)",border:"1px solid rgba(0,229,137,.22)",fontSize:14,fontWeight:600,color:VOLT,fontFamily:"'Syne',sans-serif",lineHeight:1.55 }}>
-                  {sec.callout}
-                </div>
-              )}
-
-              {sec.list && (
-                <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:9 }}>
-                  {sec.list.map((item,j)=>(
-                    <li key={j} style={{ display:"flex",alignItems:"flex-start",gap:12,fontSize:14,color:SMOKE,lineHeight:1.65 }}>
-                      <span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:2 }}>▸</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* ROI Example */}
-              {sec.example && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
-                  <div style={{ padding:"14px 20px",background:INK3,fontFamily:"'Martian Mono',monospace",fontSize:10,letterSpacing:".12em",color:VOLT,textTransform:"uppercase" }}>{sec.example.title}</div>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",padding:"1px" }}>
-                    {sec.example.params.map((p,j)=>(
-                      <div key={j} style={{ background:INK3,padding:"14px 18px" }}>
-                        <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:4 }}>{p.label}</div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:16,fontWeight:700,color:"white" }}>{p.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ padding:"1px",background:"rgba(255,255,255,.06)" }}>
-                    {sec.example.savings.map((s,j)=>(
-                      <div key={j} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 18px",background: s.highlight ? INK3 : INK,borderTop:"1px solid rgba(255,255,255,.05)",gap:20 }}>
-                        <span style={{ fontSize:13,color: s.highlight ? "white" : SMOKE,fontWeight: s.highlight ? 600 : 400 }}>{s.concept}</span>
-                        <span style={{ fontFamily:"'Syne',sans-serif",fontSize: s.highlight ? 18 : 14,fontWeight:800,color:VOLT,flexShrink:0 }}>{s.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:"rgba(255,255,255,.06)",padding:"1px" }}>
-                    {sec.example.payback.map((p,j)=>(
-                      <div key={j} style={{ background:INK3,padding:"14px 16px",textAlign:"center" }}>
-                        <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:5 }}>{p.label}</div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:18,fontWeight:800,color:VOLT }}>{p.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Financing cards */}
-              {sec.financing && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.financing.map((f,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 24px",display:"flex",gap:18,alignItems:"flex-start" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:26,fontWeight:800,color:VOLT,opacity:.22,lineHeight:1,flexShrink:0 }}>{f.num}</div>
-                      <div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,marginBottom:5,color:VOLT }}>{f.name}</div>
-                        <div style={{ fontSize:13,color:SMOKE,lineHeight:1.6 }}>{f.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Comparison table */}
-              {sec.comparison && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden",marginBottom: sec.callout ? 16 : 0 }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1.6fr 1fr 1fr",background:INK3 }}>
-                    {sec.comparison.head.map((h,j)=>(
-                      <div key={j} style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color: j===2 ? VOLT : SMOKE,borderRight: j<2 ? "1px solid rgba(255,255,255,.06)" : "none" }}>{h}</div>
-                    ))}
-                  </div>
-                  {sec.comparison.rows.map((row,j)=>(
-                    <div key={j} style={{ display:"grid",gridTemplateColumns:"1.6fr 1fr 1fr",borderTop:"1px solid rgba(255,255,255,.05)" }}>
-                      <div style={{ padding:"11px 16px",fontSize:13,borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[0]}</div>
-                      <div style={{ padding:"11px 16px",fontSize:13,color:SMOKE,textAlign:"center",borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[1]}</div>
-                      <div style={{ padding:"11px 16px",fontSize:13,color:VOLT,textAlign:"center" }}>{row[2]}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Checklist */}
-              {sec.checklist && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)",marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.checklist.map((item,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"14px 20px",display:"flex",alignItems:"center",gap:14 }}>
-                      <div style={{ width:26,height:26,borderRadius:"50%",background:"rgba(0,229,137,.12)",border:"1px solid rgba(0,229,137,.3)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:12,color:VOLT,fontWeight:700 }}>✓</div>
-                      <span style={{ fontSize:14,color:"white",lineHeight:1.4 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
-          ))}
-
-          {/* Article footer CTA */}
-          <div style={{ background:VOLT,padding:"28px 48px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap" }}>
-            <div>
-              <div style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:800,color:INK,letterSpacing:"-.02em" }}>
-                ¿Su planta puede beneficiarse de un sistema BESS?
-              </div>
-              <div style={{ fontSize:13,color:"rgba(6,16,30,.62)",marginTop:4,lineHeight:1.5 }}>
-                CySlean Consultoría y Soporte realiza el análisis técnico-financiero completo de su instalación.
-              </div>
-            </div>
-            <button onClick={scrollContact}
-              style={{ display:"inline-flex",alignItems:"center",gap:8,background:INK,color:VOLT,fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:"13px 26px",border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"background .2s,transform .2s" }}
-              onMouseEnter={e=>{e.currentTarget.style.background=INK3;e.currentTarget.style.transform="translateY(-1px)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background=INK;e.currentTarget.style.transform="none";}}>
-              🔋 Analizar mi Proyecto
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 
 /* ── Article: Smart Grid Industrial ────────────────────────────── */
 const SG_ARTICLE = {
@@ -1741,247 +1126,6 @@ const SG_ARTICLE = {
   ]
 };
 
-function SmartGridModal({ onClose }) {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
-  const scrollContact = () => {
-    onClose();
-    setTimeout(() => document.getElementById("contacto")?.scrollIntoView({ behavior:"smooth" }), 300);
-  };
-
-  return (
-    <div style={{ position:"fixed",inset:0,zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",padding:"40px 20px" }}>
-      <div onClick={onClose} style={{ position:"fixed",inset:0,background:"rgba(4,11,22,.95)",backdropFilter:"blur(14px)",zIndex:-1 }}/>
-      <div style={{ width:"100%",maxWidth:840,background:INK2,border:"1px solid rgba(0,229,137,.2)",position:"relative",animation:"fup .42s cubic-bezier(.16,1,.3,1) both",marginBottom:48 }}>
-
-        {/* Header */}
-        <div style={{ background:VOLT,padding:"32px 48px 28px",position:"relative" }}>
-          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".16em",textTransform:"uppercase",color:"rgba(6,16,30,.5)",marginBottom:10 }}>
-            Smart Grid · IoT · Gestión Energética · 10 min lectura
-          </div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(20px,3vw,29px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-.03em",color:INK,maxWidth:640,paddingRight:44 }}>
-            Smart Grid Industrial: Cómo Reducir 30% su Consumo con Datos
-          </h2>
-          <div style={{ marginTop:10,fontFamily:"'Martian Mono',monospace",fontSize:9,color:"rgba(6,16,30,.45)",letterSpacing:".1em" }}>
-            Gestión energética en tiempo real para plantas industriales · Técnico / Ejecutivo
-          </div>
-          <button onClick={onClose}
-            style={{ position:"absolute",top:20,right:20,background:INK,border:"none",color:VOLT,width:36,height:36,fontSize:17,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,lineHeight:1,transition:"background .2s" }}
-            onMouseEnter={e=>e.currentTarget.style.background=INK3}
-            onMouseLeave={e=>e.currentTarget.style.background=INK}>✕</button>
-        </div>
-
-        {/* Intro strip */}
-        <div style={{ padding:"24px 48px",background:INK3,borderBottom:"1px solid rgba(255,255,255,.06)",fontSize:14,color:SMOKE,lineHeight:1.78 }}>
-          En 2025, las plantas industriales que logran ahorros del 15% al 30% lo hacen a través de <strong style={{ color:"white" }}>Smart Grid Industrial + IoT + análisis de datos en tiempo real</strong>. La diferencia no está en consumir menos energía. Está en consumirla inteligentemente.
-        </div>
-
-        {/* Body */}
-        <div>
-          {SG_ARTICLE.sections.map((sec, si) => (
-            <div key={si} style={{ padding:"36px 48px",borderBottom:"1px solid rgba(255,255,255,.05)" }}>
-
-              <h3 style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,letterSpacing:"-.02em",marginBottom:14,paddingBottom:10,borderBottom:`1px solid ${si===0 ? VOLT : "rgba(255,255,255,.07)"}`,color: si===0 ? VOLT : "white",lineHeight:1.25 }}>
-                {sec.title}
-              </h3>
-
-              {sec.content && <p style={{ fontSize:14,color:SMOKE,lineHeight:1.82,marginBottom:18 }}>{sec.content}</p>}
-
-              {/* Component cards */}
-              {sec.components && (
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.components.map((comp,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 14px",textAlign:"center" }}>
-                      <div style={{ fontSize:24,marginBottom:8 }}>{comp.icon}</div>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,color:VOLT,marginBottom:5,lineHeight:1.2 }}>{comp.name}</div>
-                      <div style={{ fontSize:11,color:SMOKE,lineHeight:1.5 }}>{comp.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* List */}
-              {sec.list && (
-                <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:9,marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.list.map((item,j)=>(
-                    <li key={j} style={{ display:"flex",alignItems:"flex-start",gap:12,fontSize:14,color:SMOKE,lineHeight:1.65 }}>
-                      <span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:2 }}>▸</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* Callout */}
-              {sec.callout && (
-                <div style={{ padding:"15px 20px",background:"rgba(0,229,137,.07)",border:"1px solid rgba(0,229,137,.22)",fontSize:14,fontWeight:600,color:VOLT,fontFamily:"'Syne',sans-serif",lineHeight:1.55 }}>
-                  {sec.callout}
-                </div>
-              )}
-
-              {/* Architecture layers */}
-              {sec.layers && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.layers.map((layer,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"20px 24px",display:"flex",gap:20,alignItems:"flex-start" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:VOLT,opacity:.22,lineHeight:1,flexShrink:0,width:40 }}>{layer.num}</div>
-                      <div style={{ flex:1 }}>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:15,fontWeight:700,marginBottom:6,color:"white" }}>{layer.name}</div>
-                        <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65,marginBottom: layer.protocols?.length ? 10 : 0 }}>{layer.desc}</div>
-                        {layer.protocols?.length > 0 && (
-                          <div style={{ display:"flex",flexWrap:"wrap",gap:6 }}>
-                            {layer.protocols.map((p,k)=>(
-                              <span key={k} style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,padding:"3px 9px",border:"1px solid rgba(0,229,137,.2)",color:"rgba(0,229,137,.75)",letterSpacing:".08em" }}>{p}</span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Savings table */}
-              {sec.savings && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr auto",background:INK3 }}>
-                    <div style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color:SMOKE }}>Acción</div>
-                    <div style={{ padding:"10px 20px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color:VOLT }}>Ahorro Potencial</div>
-                  </div>
-                  {sec.savings.map((row,j)=>(
-                    <div key={j} style={{ display:"grid",gridTemplateColumns:"1fr auto",borderTop:"1px solid rgba(255,255,255,.05)",background: row.highlight ? "rgba(0,229,137,.06)" : "transparent" }}>
-                      <div style={{ padding:"12px 16px",fontSize:13,color: row.highlight ? "white" : SMOKE,fontWeight: row.highlight ? 700 : 400 }}>{row.action}</div>
-                      <div style={{ padding:"12px 20px",fontFamily:"'Syne',sans-serif",fontSize: row.highlight ? 18 : 14,fontWeight:800,color:VOLT,textAlign:"right" }}>{row.range}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Case study */}
-              {sec.caseBefore && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",padding:"1px" }}>
-                    {sec.caseBefore.map((item,j)=>(
-                      <div key={j} style={{ background:INK3,padding:"14px 18px" }}>
-                        <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:4 }}>{item.label}</div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:18,fontWeight:700,color:"white" }}>{item.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                  {sec.caseActions && (
-                    <div style={{ padding:"16px 18px",background:INK,borderTop:"1px solid rgba(255,255,255,.05)" }}>
-                      <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color:SMOKE,marginBottom:10 }}>Acciones implementadas</div>
-                      {sec.caseActions.map((a,j)=>(
-                        <div key={j} style={{ display:"flex",alignItems:"center",gap:10,fontSize:13,color:SMOKE,marginBottom:6 }}>
-                          <span style={{ color:VOLT,fontWeight:700 }}>▸</span>{a}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {sec.caseResults && (
-                    <div style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:"rgba(255,255,255,.06)",padding:"1px",borderTop:"1px solid rgba(255,255,255,.06)" }}>
-                      {sec.caseResults.map((r,j)=>(
-                        <div key={j} style={{ background: r.highlight ? INK3 : INK,padding:"16px 16px",textAlign:"center" }}>
-                          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:5 }}>{r.label}</div>
-                          <div style={{ fontFamily:"'Syne',sans-serif",fontSize: r.highlight ? 20 : 16,fontWeight:800,color:VOLT }}>{r.value}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Benefits grid */}
-              {sec.benefits && (
-                <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.benefits.map((b,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"22px 24px" }}>
-                      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:12 }}>
-                        <span style={{ fontSize:22 }}>{b.icon}</span>
-                        <span style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,color:VOLT }}>{b.name}</span>
-                      </div>
-                      {b.items.map((item,k)=>(
-                        <div key={k} style={{ display:"flex",alignItems:"flex-start",gap:8,fontSize:12,color:SMOKE,marginBottom:5,lineHeight:1.5 }}>
-                          <span style={{ color:VOLT,flexShrink:0,marginTop:1 }}>·</span>{item}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* ROI Highlight metrics */}
-              {sec.highlight && (
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:1,background:"rgba(255,255,255,.06)",marginBottom: sec.note ? 14 : 0 }}>
-                  {sec.highlight.map((h,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 16px",textAlign:"center" }}>
-                      <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:5 }}>{h.label}</div>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:20,fontWeight:800,color:VOLT }}>{h.value}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {sec.note && <p style={{ fontSize:13,color:VOLT,fontFamily:"'Syne',sans-serif",fontWeight:600,fontStyle:"italic",lineHeight:1.5 }}>{sec.note}</p>}
-
-              {/* Comparison table */}
-              {sec.comparison && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1.4fr 1fr 1fr",background:INK3 }}>
-                    {sec.comparison.head.map((h,j)=>(
-                      <div key={j} style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color: j===2 ? VOLT : SMOKE,borderRight: j<2 ? "1px solid rgba(255,255,255,.06)" : "none" }}>{h}</div>
-                    ))}
-                  </div>
-                  {sec.comparison.rows.map((row,j)=>(
-                    <div key={j} style={{ display:"grid",gridTemplateColumns:"1.4fr 1fr 1fr",borderTop:"1px solid rgba(255,255,255,.05)" }}>
-                      <div style={{ padding:"11px 16px",fontSize:13,fontWeight:500,borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[0]}</div>
-                      <div style={{ padding:"11px 16px",fontSize:12,color:SMOKE,textAlign:"center",borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[1]}</div>
-                      <div style={{ padding:"11px 16px",fontSize:12,color:VOLT,textAlign:"center",fontWeight:600 }}>{row[2]}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Checklist */}
-              {sec.checklist && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)",marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.checklist.map((item,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"13px 20px",display:"flex",alignItems:"center",gap:14 }}>
-                      <div style={{ width:24,height:24,borderRadius:"50%",background:"rgba(0,229,137,.1)",border:"1px solid rgba(0,229,137,.28)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:11,color:VOLT,fontWeight:700 }}>✓</div>
-                      <span style={{ fontSize:13,color:"white",lineHeight:1.4 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
-          ))}
-
-          {/* Article footer CTA */}
-          <div style={{ background:VOLT,padding:"28px 48px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap" }}>
-            <div>
-              <div style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:800,color:INK,letterSpacing:"-.02em" }}>
-                ¿Su planta está lista para el Smart Grid?
-              </div>
-              <div style={{ fontSize:13,color:"rgba(6,16,30,.62)",marginTop:4,lineHeight:1.5 }}>
-                CySlean Consultoría y Soporte realiza el diagnóstico de madurez digital energética de su instalación.
-              </div>
-            </div>
-            <button onClick={scrollContact}
-              style={{ display:"inline-flex",alignItems:"center",gap:8,background:INK,color:VOLT,fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:"13px 26px",border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"background .2s,transform .2s" }}
-              onMouseEnter={e=>{e.currentTarget.style.background=INK3;e.currentTarget.style.transform="translateY(-1px)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background=INK;e.currentTarget.style.transform="none";}}>
-              🌐 Solicitar Diagnóstico Digital
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
 /* ── Article: Subestaciones Eléctricas Industriales ────────────── */
 const SUB_ARTICLE = {
   sections: [
@@ -2143,243 +1287,6 @@ const SUB_ARTICLE = {
   ]
 };
 
-function SubestacionesModal({ onClose }) {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
-  const scrollContact = () => {
-    onClose();
-    setTimeout(() => document.getElementById("contacto")?.scrollIntoView({ behavior:"smooth" }), 300);
-  };
-
-  return (
-    <div style={{ position:"fixed",inset:0,zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",padding:"40px 20px" }}>
-      <div onClick={onClose} style={{ position:"fixed",inset:0,background:"rgba(4,11,22,.95)",backdropFilter:"blur(14px)",zIndex:-1 }}/>
-      <div style={{ width:"100%",maxWidth:840,background:INK2,border:"1px solid rgba(0,229,137,.2)",position:"relative",animation:"fup .42s cubic-bezier(.16,1,.3,1) both",marginBottom:48 }}>
-
-        {/* Header */}
-        <div style={{ background:VOLT,padding:"32px 48px 28px",position:"relative" }}>
-          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".16em",textTransform:"uppercase",color:"rgba(6,16,30,.5)",marginBottom:10 }}>
-            Subestaciones · NOM · Diseño Industrial · 15 min lectura
-          </div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(20px,3vw,29px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-.03em",color:INK,maxWidth:640,paddingRight:44 }}>
-            Guía Completa: Subestaciones Eléctricas Industriales en México
-          </h2>
-          <div style={{ marginTop:10,fontFamily:"'Martian Mono',monospace",fontSize:9,color:"rgba(6,16,30,.45)",letterSpacing:".1em" }}>
-            Diseño, normatividad y costos para plantas de más de 500 kW · Técnico / Ejecutivo
-          </div>
-          <button onClick={onClose}
-            style={{ position:"absolute",top:20,right:20,background:INK,border:"none",color:VOLT,width:36,height:36,fontSize:17,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,lineHeight:1,transition:"background .2s" }}
-            onMouseEnter={e=>e.currentTarget.style.background=INK3}
-            onMouseLeave={e=>e.currentTarget.style.background=INK}>✕</button>
-        </div>
-
-        {/* Intro strip */}
-        <div style={{ padding:"24px 48px",background:INK3,borderBottom:"1px solid rgba(255,255,255,.06)",fontSize:14,color:SMOKE,lineHeight:1.78 }}>
-          En esta guía encontrará todo lo necesario para tomar <strong style={{ color:"white" }}>decisiones técnicas y financieras sólidas</strong> sobre subestaciones eléctricas industriales en México 2025.
-        </div>
-
-        {/* Body */}
-        <div>
-          {SUB_ARTICLE.sections.map((sec, si) => (
-            <div key={si} style={{ padding:"36px 48px",borderBottom:"1px solid rgba(255,255,255,.05)" }}>
-
-              <h3 style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,letterSpacing:"-.02em",marginBottom:14,paddingBottom:10,borderBottom:`1px solid ${si===0 ? VOLT : "rgba(255,255,255,.07)"}`,color: si===0 ? VOLT : "white",lineHeight:1.25 }}>
-                {sec.title}
-              </h3>
-
-              {sec.content && <p style={{ fontSize:14,color:SMOKE,lineHeight:1.82,marginBottom:18 }}>{sec.content}</p>}
-
-              {/* Impact icons row */}
-              {sec.impact && (
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:1,background:"rgba(255,255,255,.06)",marginBottom:20 }}>
-                  {sec.impact.map((item,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"14px 12px",textAlign:"center" }}>
-                      <div style={{ fontSize:22,marginBottom:6 }}>{item.icon}</div>
-                      <div style={{ fontSize:11,color:SMOKE,lineHeight:1.4 }}>{item.label}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Components list (inline pills) */}
-              {sec.components && (
-                <div style={{ display:"flex",flexWrap:"wrap",gap:6 }}>
-                  {sec.components.map((comp,j)=>(
-                    <span key={j} style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,padding:"5px 11px",border:"1px solid rgba(0,229,137,.2)",color:"rgba(0,229,137,.8)",letterSpacing:".07em" }}>{comp}</span>
-                  ))}
-                </div>
-              )}
-
-              {/* Bullet list */}
-              {sec.list && (
-                <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:9,marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.list.map((item,j)=>(
-                    <li key={j} style={{ display:"flex",alignItems:"flex-start",gap:12,fontSize:14,color:SMOKE,lineHeight:1.65 }}>
-                      <span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:2 }}>▸</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* Callout */}
-              {sec.callout && (
-                <div style={{ padding:"15px 20px",background:"rgba(0,229,137,.07)",border:"1px solid rgba(0,229,137,.22)",fontSize:14,fontWeight:600,color:VOLT,fontFamily:"'Syne',sans-serif",lineHeight:1.55 }}>
-                  {sec.callout}
-                </div>
-              )}
-
-              {/* Norms */}
-              {sec.norms && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.norms.map((n,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 24px",display:"flex",gap:18,alignItems:"flex-start" }}>
-                      <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,fontWeight:700,color:VOLT,flexShrink:0,minWidth:180,letterSpacing:".06em" }}>{n.code}</div>
-                      <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65 }}>{n.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Types */}
-              {sec.types && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.types.map((t,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"20px 24px",display:"flex",gap:20,alignItems:"flex-start" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:VOLT,opacity:.22,lineHeight:1,flexShrink:0,width:40 }}>{t.num}</div>
-                      <div style={{ flex:1 }}>
-                        <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,marginBottom:6 }}>
-                          <div style={{ fontFamily:"'Syne',sans-serif",fontSize:15,fontWeight:700,color:"white" }}>{t.name}</div>
-                          <span style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,padding:"3px 9px",border:"1px solid rgba(0,229,137,.25)",color:VOLT,letterSpacing:".08em",flexShrink:0 }}>{t.range}</span>
-                        </div>
-                        <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65 }}>{t.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Design params accordion-style */}
-              {sec.params && (
-                <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.params.map((p,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"20px 22px" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,color:VOLT,marginBottom:6 }}>{p.name}</div>
-                      <div style={{ fontSize:13,color:SMOKE,marginBottom:10,lineHeight:1.55 }}>{p.desc}</div>
-                      {p.items.map((it,k)=>(
-                        <div key={k} style={{ display:"flex",alignItems:"flex-start",gap:8,fontSize:12,color:SMOKE,marginBottom:5,lineHeight:1.45 }}>
-                          <span style={{ color:VOLT,flexShrink:0 }}>·</span>{it}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Costs table */}
-              {sec.costsTable && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden",marginBottom: sec.note ? 14 : 0 }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr 1.2fr 1.4fr",background:INK3 }}>
-                    {sec.costsTable.head.map((h,j)=>(
-                      <div key={j} style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color: j===1 ? VOLT : SMOKE,borderRight: j<2 ? "1px solid rgba(255,255,255,.06)" : "none" }}>{h}</div>
-                    ))}
-                  </div>
-                  {sec.costsTable.rows.map((row,j)=>(
-                    <div key={j} style={{ display:"grid",gridTemplateColumns:"1fr 1.2fr 1.4fr",borderTop:"1px solid rgba(255,255,255,.05)" }}>
-                      <div style={{ padding:"12px 16px",fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,color:VOLT,borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[0]}</div>
-                      <div style={{ padding:"12px 16px",fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,color:"white",borderRight:"1px solid rgba(255,255,255,.05)" }}>{row[1]}</div>
-                      <div style={{ padding:"12px 16px",fontSize:12,color:SMOKE }}>{row[2]}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {sec.note && <p style={{ fontSize:12,color:SMOKE,fontStyle:"italic",lineHeight:1.5 }}>{sec.note}</p>}
-
-              {/* Código de Red requirements */}
-              {sec.requirements && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden",marginBottom: sec.callout ? 16 : 0 }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",background:INK3 }}>
-                    <div style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color:SMOKE,borderRight:"1px solid rgba(255,255,255,.06)" }}>Exigencia</div>
-                    <div style={{ padding:"10px 16px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".13em",textTransform:"uppercase",color:VOLT }}>Solución de Diseño</div>
-                  </div>
-                  {sec.requirements.map((r,j)=>(
-                    <div key={j} style={{ display:"grid",gridTemplateColumns:"1fr 1fr",borderTop:"1px solid rgba(255,255,255,.05)" }}>
-                      <div style={{ padding:"12px 16px",fontSize:13,color:SMOKE,borderRight:"1px solid rgba(255,255,255,.05)" }}>{r.req}</div>
-                      <div style={{ padding:"12px 16px",fontSize:13,color:VOLT,fontWeight:500 }}>{r.sol}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* ROI benefits */}
-              {sec.roi && (
-                <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.roi.map((r,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"20px 22px" }}>
-                      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:8 }}>
-                        <span style={{ fontSize:20 }}>{r.icon}</span>
-                        <span style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:VOLT }}>{r.benefit}</span>
-                      </div>
-                      <div style={{ fontSize:12,color:SMOKE,lineHeight:1.6 }}>{r.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Smart integration */}
-              {sec.smart && (
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.smart.map((s,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 16px",textAlign:"center" }}>
-                      <div style={{ fontSize:24,marginBottom:8 }}>{s.icon}</div>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,color:VOLT,marginBottom:5 }}>{s.name}</div>
-                      <div style={{ fontSize:11,color:SMOKE,lineHeight:1.5 }}>{s.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Checklist */}
-              {sec.checklist && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)",marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.checklist.map((item,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"13px 20px",display:"flex",alignItems:"center",gap:14 }}>
-                      <div style={{ width:24,height:24,borderRadius:"50%",background:"rgba(0,229,137,.1)",border:"1px solid rgba(0,229,137,.28)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:11,color:VOLT,fontWeight:700 }}>✓</div>
-                      <span style={{ fontSize:13,color:"white",lineHeight:1.4 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
-          ))}
-
-          {/* Article footer CTA */}
-          <div style={{ background:VOLT,padding:"28px 48px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap" }}>
-            <div>
-              <div style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:800,color:INK,letterSpacing:"-.02em" }}>
-                ¿Su planta requiere una subestación?
-              </div>
-              <div style={{ fontSize:13,color:"rgba(6,16,30,.62)",marginTop:4,lineHeight:1.5 }}>
-                CySlean Consultoría y Soporte diseña e integra subestaciones industriales cumpliendo NOM y Código de Red.
-              </div>
-            </div>
-            <button onClick={scrollContact}
-              style={{ display:"inline-flex",alignItems:"center",gap:8,background:INK,color:VOLT,fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:"13px 26px",border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"background .2s,transform .2s" }}
-              onMouseEnter={e=>{e.currentTarget.style.background=INK3;e.currentTarget.style.transform="translateY(-1px)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background=INK;e.currentTarget.style.transform="none";}}>
-              ⚡ Consultar mi Proyecto
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
 /* ── Article: Energías Renovables Industriales ─────────────────── */
 const ER_ARTICLE = {
   sections: [
@@ -2509,249 +1416,259 @@ const ER_ARTICLE = {
   ]
 };
 
-function ERModal({ onClose }) {
+/* ── Shared Article Modal ────────────────────────────────────── */
+const ARTICLES = {
+  fp:  { meta:"Factor de Potencia · Eficiencia · CFE · 8 min",  title:"Factor de Potencia CFE: ¿Cuánto le Cuesta a su Planta no Corregirlo en 2025?", cta:"¿Su planta tiene bajo Factor de Potencia?", ctaBtn:"⚡ Solicitar Diagnóstico", data: FP_ARTICLE },
+  bess:{ meta:"BESS · Almacenamiento · Tarifas HM/HS · 12 min", title:"Sistemas BESS Industrial: Guía Técnica Completa México 2025", cta:"¿Su planta puede beneficiarse de un sistema BESS?", ctaBtn:"🔋 Analizar mi Proyecto", data: BESS_ARTICLE },
+  sg:  { meta:"Smart Grid · IoT · Gestión Energética · 10 min",  title:"Smart Grid Industrial: Cómo Reducir 30% su Consumo con Datos", cta:"¿Su planta está lista para el Smart Grid?", ctaBtn:"🌐 Solicitar Diagnóstico Digital", data: SG_ARTICLE },
+  sub: { meta:"Subestaciones · NOM · Diseño Industrial · 15 min",title:"Guía Completa: Subestaciones Eléctricas Industriales en México", cta:"¿Su planta requiere una subestación?", ctaBtn:"⚡ Consultar mi Proyecto", data: SUB_ARTICLE },
+  er:  { meta:"Energías Renovables · FV · Eólica · 11 min",      title:"Energías Renovables Industriales en México 2025: Solar, Eólica e Híbridos", cta:"¿Su planta está lista para energías renovables?", ctaBtn:"☀️ Solicitar Estudio de Factibilidad", data: ER_ARTICLE },
+};
+
+function ArticleModal({ type, onClose }) {
+  const [openFaq, setOpenFaq] = useState(null);
+  const art = ARTICLES[type];
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
-  const scrollContact = () => {
-    onClose();
-    setTimeout(() => document.getElementById("contacto")?.scrollIntoView({ behavior:"smooth" }), 300);
-  };
+  const go = () => { onClose(); setTimeout(() => document.getElementById("contacto")?.scrollIntoView({ behavior:"smooth" }), 300); };
+
+  const renderSection = (sec, si) => (
+    <div key={si} style={{ padding:"36px 48px",borderBottom:"1px solid rgba(255,255,255,.05)" }}>
+      <h3 style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,letterSpacing:"-.02em",marginBottom:14,paddingBottom:10,borderBottom:`1px solid ${si===0?VOLT:"rgba(255,255,255,.07)"}`,color:si===0?VOLT:"white",lineHeight:1.25 }}>{sec.title}</h3>
+
+      {sec.content && <p style={{ fontSize:14,color:SMOKE,lineHeight:1.82,marginBottom:18 }}>{sec.content}</p>}
+
+      {sec.formula && <div style={{ background:INK3,border:"1px solid rgba(0,229,137,.22)",padding:"14px 22px",fontFamily:"'Martian Mono',monospace",fontSize:16,color:VOLT,letterSpacing:".08em",marginBottom:sec.highlight?18:0 }}>{sec.formula}</div>}
+
+      {sec.table && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
+        <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.table.head.length},1fr)`,background:INK3 }}>
+          {sec.table.head.map((h,j)=><div key={j} style={{ padding:"10px 14px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".12em",textTransform:"uppercase",color:j===sec.table.head.length-1?VOLT:SMOKE,borderRight:j<sec.table.head.length-1?"1px solid rgba(255,255,255,.06)":"none" }}>{h}</div>)}
+        </div>
+        {sec.table.rows.map((row,j)=><div key={j} style={{ display:"grid",gridTemplateColumns:`repeat(${row.length},1fr)`,borderTop:"1px solid rgba(255,255,255,.05)" }}>
+          {row.map((cell,k)=><div key={k} style={{ padding:"11px 14px",fontSize:k===0?12:11,color:k===0?VOLT:SMOKE,fontFamily:k===0?"'Martian Mono',monospace":"inherit",letterSpacing:k===0?".05em":0,borderRight:k<row.length-1?"1px solid rgba(255,255,255,.05)":"none" }}>{cell}</div>)}
+        </div>)}
+      </div>}
+
+      {sec.highlight && <div style={{ display:"grid",gridTemplateColumns:`repeat(${Math.min(sec.highlight.length,2)},1fr)`,gap:1,background:"rgba(255,255,255,.06)",marginTop:sec.formula?0:0 }}>
+        {sec.highlight.map((h,j)=><div key={j} style={{ background:INK3,padding:"18px 20px" }}>
+          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,letterSpacing:".12em",textTransform:"uppercase",color:SMOKE,marginBottom:5 }}>{h.label}</div>
+          <div style={{ fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,color:VOLT,letterSpacing:"-.02em" }}>{h.value}</div>
+        </div>)}
+      </div>}
+
+      {sec.note && <p style={{ fontSize:13,color:VOLT,fontFamily:"'Syne',sans-serif",fontWeight:600,fontStyle:"italic",marginTop:14,lineHeight:1.5 }}>{sec.note}</p>}
+      {sec.callout && <div style={{ padding:"15px 20px",background:"rgba(0,229,137,.07)",border:"1px solid rgba(0,229,137,.22)",fontSize:14,fontWeight:600,color:VOLT,fontFamily:"'Syne',sans-serif",lineHeight:1.55,marginTop:sec.list||sec.comparison||sec.checklist?16:0 }}>{sec.callout}</div>}
+
+      {sec.list && <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:9,marginBottom:sec.callout?16:0 }}>
+        {sec.list.map((item,j)=><li key={j} style={{ display:"flex",alignItems:"flex-start",gap:12,fontSize:14,color:SMOKE,lineHeight:1.65 }}><span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:2 }}>▸</span>{item}</li>)}
+      </ul>}
+
+      {sec.solutions && <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.solutions.map((s,j)=><div key={j} style={{ background:INK3,padding:"20px 22px" }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,marginBottom:8,color:VOLT }}>{s.name}</div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.65 }}>{s.desc}</div></div>)}
+      </div>}
+
+      {sec.components && <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.components.length},1fr)`,gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.components.map((comp,j)=><div key={j} style={{ background:INK3,padding:"18px 12px",textAlign:"center" }}><div style={{ fontSize:22,marginBottom:7 }}>{comp.icon}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:11,fontWeight:700,color:VOLT,marginBottom:4,lineHeight:1.2 }}>{comp.name}</div><div style={{ fontSize:10,color:SMOKE,lineHeight:1.45 }}>{comp.desc}</div></div>)}
+      </div>}
+
+      {sec.apps && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.apps.map((app,j)=><div key={j} style={{ background:INK3,padding:"20px 22px",display:"flex",gap:18 }}>
+          <div style={{ fontFamily:"'Syne',sans-serif",fontSize:26,fontWeight:800,color:VOLT,opacity:.22,lineHeight:1,flexShrink:0,width:38 }}>{app.num}</div>
+          <div style={{ flex:1 }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,marginBottom:5 }}>{app.name}</div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.65,marginBottom:app.highlight?12:0 }}>{app.desc}</div>
+            {app.highlight&&<div style={{ display:"flex",gap:1 }}>{app.highlight.map((h,k)=><div key={k} style={{ background:INK,padding:"9px 12px",flex:1 }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",marginBottom:3 }}>{h.label}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:16,fontWeight:800,color:VOLT }}>{h.value}</div></div>)}</div>}
+            {app.note&&<div style={{ fontSize:12,color:VOLT,fontStyle:"italic",marginTop:8 }}>{app.note}</div>}
+          </div>
+        </div>)}
+      </div>}
+
+      {sec.layers && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.layers.map((l,j)=><div key={j} style={{ background:INK3,padding:"18px 22px",display:"flex",gap:18 }}>
+          <div style={{ fontFamily:"'Syne',sans-serif",fontSize:26,fontWeight:800,color:VOLT,opacity:.22,lineHeight:1,flexShrink:0,width:38 }}>{l.num}</div>
+          <div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,marginBottom:5 }}>{l.name}</div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.65,marginBottom:l.protocols?.length?10:0 }}>{l.desc}</div>
+            {l.protocols?.length>0&&<div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>{l.protocols.map((p,k)=><span key={k} style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,padding:"3px 8px",border:"1px solid rgba(0,229,137,.2)",color:"rgba(0,229,137,.75)",letterSpacing:".07em" }}>{p}</span>)}</div>}
+          </div>
+        </div>)}
+      </div>}
+
+      {sec.savings && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
+        <div style={{ display:"grid",gridTemplateColumns:"1fr auto",background:INK3 }}>
+          <div style={{ padding:"10px 14px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".12em",textTransform:"uppercase",color:SMOKE }}>Acción</div>
+          <div style={{ padding:"10px 18px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".12em",textTransform:"uppercase",color:VOLT }}>Ahorro Potencial</div>
+        </div>
+        {sec.savings.map((row,j)=><div key={j} style={{ display:"grid",gridTemplateColumns:"1fr auto",borderTop:"1px solid rgba(255,255,255,.05)",background:row.highlight?"rgba(0,229,137,.06)":"transparent" }}>
+          <div style={{ padding:"12px 14px",fontSize:13,color:row.highlight?"white":SMOKE,fontWeight:row.highlight?700:400 }}>{row.action}</div>
+          <div style={{ padding:"12px 18px",fontFamily:"'Syne',sans-serif",fontSize:row.highlight?18:14,fontWeight:800,color:VOLT,textAlign:"right" }}>{row.range}</div>
+        </div>)}
+      </div>}
+
+      {sec.example && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
+        <div style={{ padding:"12px 18px",background:INK3,fontFamily:"'Martian Mono',monospace",fontSize:10,letterSpacing:".1em",color:VOLT,textTransform:"uppercase" }}>{sec.example.title}</div>
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",padding:1 }}>
+          {sec.example.params.map((p,j)=><div key={j} style={{ background:INK3,padding:"12px 16px" }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",marginBottom:3 }}>{p.label}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700 }}>{p.value}</div></div>)}
+        </div>
+        {sec.example.savings.map((s,j)=><div key={j} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"11px 16px",background:s.highlight?INK3:INK,borderTop:"1px solid rgba(255,255,255,.05)",gap:16 }}>
+          <span style={{ fontSize:13,color:s.highlight?"white":SMOKE,fontWeight:s.highlight?600:400 }}>{s.concept}</span>
+          <span style={{ fontFamily:"'Syne',sans-serif",fontSize:s.highlight?18:14,fontWeight:800,color:VOLT,flexShrink:0 }}>{s.value}</span>
+        </div>)}
+        <div style={{ display:"grid",gridTemplateColumns:`repeat(${(sec.example.payback||sec.example.investment||[]).length},1fr)`,gap:1,background:"rgba(255,255,255,.06)",padding:1,borderTop:"1px solid rgba(255,255,255,.06)" }}>
+          {(sec.example.payback||sec.example.investment||[]).map((r,j)=><div key={j} style={{ background:r.highlight?INK3:INK,padding:"13px 14px",textAlign:"center" }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",marginBottom:4 }}>{r.label}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:r.highlight?19:15,fontWeight:800,color:VOLT }}>{r.value}</div></div>)}
+        </div>
+      </div>}
+
+      {sec.roiExample && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",padding:1 }}>
+          {sec.roiExample.params.map((p,j)=><div key={j} style={{ background:INK3,padding:"12px 16px" }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",marginBottom:3 }}>{p.label}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700 }}>{p.value}</div></div>)}
+        </div>
+        {sec.roiExample.savings.map((s,j)=><div key={j} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"11px 16px",background:s.highlight?INK3:INK,borderTop:"1px solid rgba(255,255,255,.05)",gap:16 }}>
+          <span style={{ fontSize:13,color:s.highlight?"white":SMOKE,fontWeight:s.highlight?600:400 }}>{s.concept}</span>
+          <span style={{ fontFamily:"'Syne',sans-serif",fontSize:s.highlight?18:14,fontWeight:800,color:VOLT,flexShrink:0 }}>{s.value}</span>
+        </div>)}
+        <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.roiExample.investment.length},1fr)`,gap:1,background:"rgba(255,255,255,.06)",padding:1,borderTop:"1px solid rgba(255,255,255,.06)" }}>
+          {sec.roiExample.investment.map((r,j)=><div key={j} style={{ background:r.highlight?INK3:INK,padding:"13px 14px",textAlign:"center" }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",marginBottom:4 }}>{r.label}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:r.highlight?19:15,fontWeight:800,color:VOLT }}>{r.value}</div></div>)}
+        </div>
+      </div>}
+
+      {sec.norms && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.norms.map((n,j)=><div key={j} style={{ background:INK3,padding:"14px 20px",display:"flex",gap:14 }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,fontWeight:700,color:VOLT,flexShrink:0,minWidth:160,letterSpacing:".05em" }}>{n.code}</div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.6 }}>{n.desc}</div></div>)}
+      </div>}
+
+      {sec.types && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.types.map((t,j)=><div key={j} style={{ background:INK3,padding:"18px 22px",display:"flex",gap:18 }}>
+          <div style={{ fontFamily:"'Syne',sans-serif",fontSize:26,fontWeight:800,color:VOLT,opacity:.2,lineHeight:1,flexShrink:0,width:38 }}>{t.num}</div>
+          <div style={{ flex:1 }}><div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,marginBottom:5 }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700 }}>{t.name}</div><span style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,padding:"2px 8px",border:"1px solid rgba(0,229,137,.25)",color:VOLT,flexShrink:0 }}>{t.range}</span></div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.6 }}>{t.desc}</div></div>
+        </div>)}
+      </div>}
+
+      {sec.params && <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.params.map((p,j)=><div key={j} style={{ background:INK3,padding:"18px 20px" }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:VOLT,marginBottom:6 }}>{p.name}</div><div style={{ fontSize:13,color:SMOKE,marginBottom:10,lineHeight:1.5 }}>{p.desc}</div>{p.items.map((it,k)=><div key={k} style={{ display:"flex",gap:8,fontSize:12,color:SMOKE,marginBottom:5 }}><span style={{ color:VOLT,flexShrink:0 }}>·</span>{it}</div>)}</div>)}
+      </div>}
+
+      {sec.costsTable && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden",marginBottom:sec.note?14:0 }}>
+        <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.costsTable.head.length},1fr)`,background:INK3 }}>
+          {sec.costsTable.head.map((h,j)=><div key={j} style={{ padding:"10px 14px",fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".12em",textTransform:"uppercase",color:j===1?VOLT:SMOKE,borderRight:j<sec.costsTable.head.length-1?"1px solid rgba(255,255,255,.06)":"none" }}>{h}</div>)}
+        </div>
+        {sec.costsTable.rows.map((row,j)=><div key={j} style={{ display:"grid",gridTemplateColumns:`repeat(${row.length},1fr)`,borderTop:"1px solid rgba(255,255,255,.05)" }}>
+          {row.map((cell,k)=><div key={k} style={{ padding:"11px 14px",fontSize:k===0?14:k===1?14:12,color:k===0?VOLT:k===1?"white":SMOKE,fontFamily:k<2?"'Syne',sans-serif":"inherit",fontWeight:k<2?700:400,borderRight:k<row.length-1?"1px solid rgba(255,255,255,.05)":"none" }}>{cell}</div>)}
+        </div>)}
+      </div>}
+
+      {sec.requirements && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden",marginBottom:sec.callout?16:0 }}>
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",background:INK3 }}>
+          <div style={{ padding:"10px 14px",fontFamily:"'Martian Mono',monospace",fontSize:9,textTransform:"uppercase",color:SMOKE,borderRight:"1px solid rgba(255,255,255,.06)" }}>Exigencia</div>
+          <div style={{ padding:"10px 14px",fontFamily:"'Martian Mono',monospace",fontSize:9,textTransform:"uppercase",color:VOLT }}>Solución</div>
+        </div>
+        {sec.requirements.map((r,j)=><div key={j} style={{ display:"grid",gridTemplateColumns:"1fr 1fr",borderTop:"1px solid rgba(255,255,255,.05)" }}>
+          <div style={{ padding:"11px 14px",fontSize:13,color:SMOKE,borderRight:"1px solid rgba(255,255,255,.05)" }}>{r.req}</div>
+          <div style={{ padding:"11px 14px",fontSize:13,color:VOLT,fontWeight:500 }}>{r.sol}</div>
+        </div>)}
+      </div>}
+
+      {sec.roi && <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",marginBottom:sec.callout?16:0 }}>
+        {sec.roi.map((r,j)=><div key={j} style={{ background:INK3,padding:"18px 20px" }}><div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:7 }}><span style={{ fontSize:18 }}>{r.icon}</span><span style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:VOLT }}>{r.benefit}</span></div><div style={{ fontSize:12,color:SMOKE,lineHeight:1.6 }}>{r.desc}</div></div>)}
+      </div>}
+
+      {sec.smart && <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.smart.length},1fr)`,gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.smart.map((s,j)=><div key={j} style={{ background:INK3,padding:"16px 14px",textAlign:"center" }}><div style={{ fontSize:22,marginBottom:7 }}>{s.icon}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,color:VOLT,marginBottom:4 }}>{s.name}</div><div style={{ fontSize:11,color:SMOKE,lineHeight:1.5 }}>{s.desc}</div></div>)}
+      </div>}
+
+      {sec.financing && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.financing.map((f,j)=><div key={j} style={{ background:INK3,padding:"16px 22px",display:"flex",gap:16 }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:24,fontWeight:800,color:VOLT,opacity:.2,lineHeight:1,flexShrink:0 }}>{f.num}</div><div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,marginBottom:4,color:VOLT }}>{f.name}</div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.6 }}>{f.desc}</div></div></div>)}
+      </div>}
+
+      {sec.comparison && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden",marginBottom:sec.callout?16:0 }}>
+        <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.comparison.head.length},1fr)`,background:INK3 }}>
+          {sec.comparison.head.map((h,j)=><div key={j} style={{ padding:"10px 14px",fontFamily:"'Martian Mono',monospace",fontSize:9,textTransform:"uppercase",color:j===sec.comparison.head.length-1?VOLT:SMOKE,borderRight:j<sec.comparison.head.length-1?"1px solid rgba(255,255,255,.06)":"none" }}>{h}</div>)}
+        </div>
+        {sec.comparison.rows.map((row,j)=><div key={j} style={{ display:"grid",gridTemplateColumns:`repeat(${row.length},1fr)`,borderTop:"1px solid rgba(255,255,255,.05)" }}>
+          {row.map((cell,k)=><div key={k} style={{ padding:"11px 14px",fontSize:12,color:k===row.length-1?VOLT:k===0?"white":SMOKE,fontWeight:k===row.length-1?600:k===0?500:400,textAlign:k>0?"center":"left",borderRight:k<row.length-1?"1px solid rgba(255,255,255,.05)":"none" }}>{cell}</div>)}
+        </div>)}
+      </div>}
+
+      {sec.checklist && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)",marginBottom:sec.callout?16:0 }}>
+        {sec.checklist.map((item,j)=><div key={j} style={{ background:INK3,padding:"12px 18px",display:"flex",alignItems:"center",gap:12 }}><div style={{ width:22,height:22,borderRadius:"50%",background:"rgba(0,229,137,.1)",border:"1px solid rgba(0,229,137,.28)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:11,color:VOLT,fontWeight:700 }}>✓</div><span style={{ fontSize:13,color:"white",lineHeight:1.4 }}>{item}</span></div>)}
+      </div>}
+
+      {sec.faq && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
+        {sec.faq.map((item,j)=><div key={j} style={{ borderBottom:j<sec.faq.length-1?"1px solid rgba(255,255,255,.07)":"none" }}>
+          <button onClick={()=>setOpenFaq(openFaq===j?null:j)} style={{ width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,padding:"15px 18px",background:openFaq===j?INK3:"transparent",border:"none",cursor:"pointer",textAlign:"left",transition:"background .25s" }} onMouseEnter={e=>{if(openFaq!==j)e.currentTarget.style.background="rgba(255,255,255,.025)"}} onMouseLeave={e=>{if(openFaq!==j)e.currentTarget.style.background="transparent"}}>
+            <span style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:600,color:"white",lineHeight:1.4 }}>{item.q}</span>
+            <span style={{ color:VOLT,fontSize:20,flexShrink:0,display:"inline-block",transform:openFaq===j?"rotate(45deg)":"rotate(0deg)",transition:"transform .3s cubic-bezier(.16,1,.3,1)",lineHeight:1 }}>+</span>
+          </button>
+          {openFaq===j&&<div style={{ padding:"0 18px 14px",fontSize:13,color:SMOKE,lineHeight:1.78,animation:"fup .28s cubic-bezier(.16,1,.3,1) both" }}>{item.a}</div>}
+        </div>)}
+      </div>}
+
+      {sec.modalities && <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.modalities.map((m,j)=><div key={j} style={{ background:INK3,padding:"20px 20px" }}><div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:10 }}><span style={{ fontSize:18 }}>{m.icon}</span><div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:"white",lineHeight:1.2 }}>{m.name}</div><span style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,padding:"2px 7px",border:"1px solid rgba(0,229,137,.25)",color:VOLT,marginTop:3,display:"inline-block" }}>{m.tag}</span></div></div><p style={{ fontSize:12,color:SMOKE,lineHeight:1.65,marginBottom:10 }}>{m.desc}</p>{m.bullets.map((b,k)=><div key={k} style={{ display:"flex",gap:8,fontSize:11,color:SMOKE,marginBottom:4,lineHeight:1.4 }}><span style={{ color:VOLT,fontWeight:700,flexShrink:0 }}>▸</span>{b}</div>)}</div>)}
+      </div>}
+
+      {sec.fvTypes && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.fvTypes.map((t,j)=><div key={j} style={{ background:INK3,padding:"16px 22px",display:"flex",gap:14 }}><div style={{ width:6,height:6,borderRadius:"50%",background:VOLT,flexShrink:0,marginTop:6 }}/><div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:VOLT,marginBottom:4 }}>{t.name}</div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.6 }}>{t.desc}</div></div></div>)}
+      </div>}
+
+      {sec.process && <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.process.map((p,j)=><div key={j} style={{ background:INK3,padding:"16px 20px",display:"flex",gap:16 }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:24,fontWeight:800,color:VOLT,opacity:.2,lineHeight:1,flexShrink:0,width:38 }}>{p.n}</div><div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,marginBottom:4 }}>{p.name}</div><div style={{ fontSize:13,color:SMOKE,lineHeight:1.6 }}>{p.desc}</div></div></div>)}
+      </div>}
+
+      {sec.tech && <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.tech.map((t,j)=><div key={j} style={{ background:INK3,padding:"18px 20px" }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:VOLT,marginBottom:8,paddingBottom:6,borderBottom:"1px solid rgba(0,229,137,.15)" }}>{t.cat}</div>{t.items.map((item,k)=><div key={k} style={{ display:"flex",gap:8,fontSize:11,color:SMOKE,marginBottom:5,lineHeight:1.4 }}><span style={{ color:VOLT,fontWeight:700,flexShrink:0 }}>·</span>{item}</div>)}</div>)}
+      </div>}
+
+      {sec.impact && <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.impact.length},1fr)`,gap:1,background:"rgba(255,255,255,.06)",marginBottom:14 }}>
+        {sec.impact.map((item,j)=><div key={j} style={{ background:INK3,padding:"14px 10px",textAlign:"center" }}><div style={{ fontSize:20,marginBottom:5 }}>{item.icon}</div><div style={{ fontSize:10,color:SMOKE,lineHeight:1.4 }}>{item.label}</div></div>)}
+      </div>}
+
+      {sec.caseBefore && <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",padding:1 }}>
+          {sec.caseBefore.map((item,j)=><div key={j} style={{ background:INK3,padding:"12px 16px" }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",marginBottom:3 }}>{item.label}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700 }}>{item.value}</div></div>)}
+        </div>
+        {sec.caseActions&&<div style={{ padding:"14px 16px",background:INK,borderTop:"1px solid rgba(255,255,255,.05)" }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".1em",textTransform:"uppercase",color:SMOKE,marginBottom:8 }}>Acciones implementadas</div>{sec.caseActions.map((a,j)=><div key={j} style={{ display:"flex",alignItems:"center",gap:10,fontSize:13,color:SMOKE,marginBottom:5 }}><span style={{ color:VOLT,fontWeight:700 }}>▸</span>{a}</div>)}</div>}
+        {sec.caseResults&&<div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.caseResults.length},1fr)`,gap:1,background:"rgba(255,255,255,.06)",padding:1,borderTop:"1px solid rgba(255,255,255,.06)" }}>
+          {sec.caseResults.map((r,j)=><div key={j} style={{ background:r.highlight?INK3:INK,padding:"13px 14px",textAlign:"center" }}><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",marginBottom:4 }}>{r.label}</div><div style={{ fontFamily:"'Syne',sans-serif",fontSize:r.highlight?19:15,fontWeight:800,color:VOLT }}>{r.value}</div></div>)}
+        </div>}
+      </div>}
+
+      {sec.benefits && <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.benefits.map((b,j)=><div key={j} style={{ background:INK3,padding:"20px 20px" }}><div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:10 }}><span style={{ fontSize:20 }}>{b.icon}</span><span style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:VOLT }}>{b.name}</span></div>{b.items.map((item,k)=><div key={k} style={{ display:"flex",gap:8,fontSize:12,color:SMOKE,marginBottom:4,lineHeight:1.5 }}><span style={{ color:VOLT,flexShrink:0 }}>·</span>{item}</div>)}</div>)}
+      </div>}
+
+      {sec.metrics && <div style={{ display:"grid",gridTemplateColumns:`repeat(${sec.metrics.length},1fr)`,gap:1,background:"rgba(255,255,255,.06)" }}>
+        {sec.metrics.map((m,j)=><div key={j} style={{ background:INK3,padding:"16px 14px",textAlign:"center" }}><div style={{ fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,color:VOLT,letterSpacing:"-.02em",marginBottom:4 }}>{m.value}</div><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,textTransform:"uppercase",letterSpacing:".1em",marginBottom:3 }}>{m.label}</div><div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:"rgba(0,229,137,.4)" }}>{m.note}</div></div>)}
+      </div>}
+
+    </div>
+  );
 
   return (
     <div style={{ position:"fixed",inset:0,zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",overflowY:"auto",padding:"40px 20px" }}>
       <div onClick={onClose} style={{ position:"fixed",inset:0,background:"rgba(4,11,22,.95)",backdropFilter:"blur(14px)",zIndex:-1 }}/>
       <div style={{ width:"100%",maxWidth:840,background:INK2,border:"1px solid rgba(0,229,137,.2)",position:"relative",animation:"fup .42s cubic-bezier(.16,1,.3,1) both",marginBottom:48 }}>
-
-        {/* Header */}
-        <div style={{ background:VOLT,padding:"32px 48px 28px",position:"relative" }}>
-          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".16em",textTransform:"uppercase",color:"rgba(6,16,30,.5)",marginBottom:10 }}>
-            Energías Renovables · FV · Eólica · Híbridos · 11 min lectura
-          </div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(20px,3vw,29px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-.03em",color:INK,maxWidth:660,paddingRight:44 }}>
-            Energías Renovables Industriales en México 2025: Solar, Eólica e Híbridos
-          </h2>
-          <div style={{ marginTop:10,fontFamily:"'Martian Mono',monospace",fontSize:9,color:"rgba(6,16,30,.45)",letterSpacing:".1em" }}>
-            FV · Eólica · FV+BESS · Modalidades CRE · ROI Real · Técnico / Ejecutivo
-          </div>
-          <button onClick={onClose}
-            style={{ position:"absolute",top:20,right:20,background:INK,border:"none",color:VOLT,width:36,height:36,fontSize:17,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,lineHeight:1,transition:"background .2s" }}
-            onMouseEnter={e=>e.currentTarget.style.background=INK3}
-            onMouseLeave={e=>e.currentTarget.style.background=INK}>✕</button>
+        <div style={{ background:VOLT,padding:"30px 46px 26px",position:"relative" }}>
+          <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:9,letterSpacing:".15em",textTransform:"uppercase",color:"rgba(6,16,30,.5)",marginBottom:9 }}>{art.meta}</div>
+          <h2 style={{ fontFamily:"'Syne',sans-serif",fontSize:"clamp(19px,2.8vw,27px)",fontWeight:800,lineHeight:1.1,letterSpacing:"-.03em",color:INK,maxWidth:640,paddingRight:44 }}>{art.title}</h2>
+          <button onClick={onClose} style={{ position:"absolute",top:20,right:20,background:INK,border:"none",color:VOLT,width:34,height:34,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,lineHeight:1,transition:"background .2s" }} onMouseEnter={e=>e.currentTarget.style.background=INK3} onMouseLeave={e=>e.currentTarget.style.background=INK}>✕</button>
         </div>
-
-        {/* Intro strip */}
-        <div style={{ padding:"22px 48px",background:INK3,borderBottom:"1px solid rgba(255,255,255,.06)",fontSize:14,color:SMOKE,lineHeight:1.78 }}>
-          Las plantas industriales que no diversifican su fuente energética asumen un <strong style={{ color:"white" }}>riesgo financiero creciente</strong>. La fotovoltaica, la eólica y los sistemas híbridos han alcanzado costos que los hacen <strong style={{ color:"white" }}>competitivos sin subsidios</strong> — con paybacks de 3 a 8 años y vidas útiles de 25 años.
-        </div>
-
-        {/* Body */}
-        <div>
-          {ER_ARTICLE.sections.map((sec, si) => (
-            <div key={si} style={{ padding:"36px 48px",borderBottom:"1px solid rgba(255,255,255,.05)" }}>
-
-              <h3 style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,letterSpacing:"-.02em",marginBottom:14,paddingBottom:10,borderBottom:`1px solid ${si===0 ? VOLT : "rgba(255,255,255,.07)"}`,color: si===0 ? VOLT : "white",lineHeight:1.25 }}>
-                {sec.title}
-              </h3>
-
-              {sec.content && <p style={{ fontSize:14,color:SMOKE,lineHeight:1.82,marginBottom:18 }}>{sec.content}</p>}
-
-              {/* Key metrics row */}
-              {sec.metrics && (
-                <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.metrics.map((m,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 16px",textAlign:"center" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:24,fontWeight:800,color:VOLT,lineHeight:1,letterSpacing:"-.02em",marginBottom:5 }}>{m.value}</div>
-                      <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:3 }}>{m.label}</div>
-                      <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:"rgba(0,229,137,.4)",letterSpacing:".06em" }}>{m.note}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* FV system types */}
-              {sec.fvTypes && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.fvTypes.map((t,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 24px",display:"flex",gap:16,alignItems:"flex-start" }}>
-                      <div style={{ width:6,height:6,borderRadius:"50%",background:VOLT,flexShrink:0,marginTop:6 }}/>
-                      <div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,color:VOLT,marginBottom:5 }}>{t.name}</div>
-                        <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65 }}>{t.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Modalities grid */}
-              {sec.modalities && (
-                <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.modalities.map((m,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"22px 22px" }}>
-                      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:10 }}>
-                        <span style={{ fontSize:20 }}>{m.icon}</span>
-                        <div>
-                          <div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,color:"white",lineHeight:1.2 }}>{m.name}</div>
-                          <span style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,padding:"2px 7px",border:"1px solid rgba(0,229,137,.25)",color:VOLT,letterSpacing:".08em",marginTop:4,display:"inline-block" }}>{m.tag}</span>
-                        </div>
-                      </div>
-                      <p style={{ fontSize:12,color:SMOKE,lineHeight:1.65,marginBottom:10 }}>{m.desc}</p>
-                      {m.bullets.map((b,k)=>(
-                        <div key={k} style={{ display:"flex",alignItems:"flex-start",gap:8,fontSize:11,color:SMOKE,marginBottom:5,lineHeight:1.45 }}>
-                          <span style={{ color:VOLT,fontWeight:700,flexShrink:0 }}>▸</span>{b}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* ROI Example */}
-              {sec.roiExample && (
-                <div style={{ border:"1px solid rgba(255,255,255,.07)",overflow:"hidden" }}>
-                  <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)",padding:"1px" }}>
-                    {sec.roiExample.params.map((p,j)=>(
-                      <div key={j} style={{ background:INK3,padding:"13px 18px" }}>
-                        <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:4 }}>{p.label}</div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:15,fontWeight:700,color:"white" }}>{p.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ padding:"1px",background:"rgba(255,255,255,.06)" }}>
-                    {sec.roiExample.savings.map((s,j)=>(
-                      <div key={j} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 18px",background: s.highlight ? INK3 : INK,borderTop:"1px solid rgba(255,255,255,.05)",gap:20 }}>
-                        <span style={{ fontSize:13,color: s.highlight ? "white" : SMOKE,fontWeight: s.highlight ? 600 : 400 }}>{s.concept}</span>
-                        <span style={{ fontFamily:"'Syne',sans-serif",fontSize: s.highlight ? 18 : 14,fontWeight:800,color:VOLT,flexShrink:0 }}>{s.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:"rgba(255,255,255,.06)",padding:"1px",borderTop:"1px solid rgba(255,255,255,.06)" }}>
-                    {sec.roiExample.investment.map((r,j)=>(
-                      <div key={j} style={{ background: r.highlight ? INK3 : INK,padding:"14px 16px",textAlign:"center" }}>
-                        <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:8,color:SMOKE,letterSpacing:".1em",textTransform:"uppercase",marginBottom:4 }}>{r.label}</div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize: r.highlight ? 20 : 16,fontWeight:800,color:VOLT }}>{r.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* 6-step process */}
-              {sec.process && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.process.map((p,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"18px 22px",display:"flex",gap:18,alignItems:"flex-start" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:26,fontWeight:800,color:VOLT,opacity:.2,lineHeight:1,flexShrink:0,width:40 }}>{p.n}</div>
-                      <div>
-                        <div style={{ fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,color:"white",marginBottom:4 }}>{p.name}</div>
-                        <div style={{ fontSize:13,color:SMOKE,lineHeight:1.65 }}>{p.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Norms */}
-              {sec.norms && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.norms.map((n,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"15px 22px",display:"flex",gap:16,alignItems:"flex-start" }}>
-                      <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,fontWeight:700,color:VOLT,flexShrink:0,minWidth:160,letterSpacing:".05em" }}>{n.code}</div>
-                      <div style={{ fontSize:13,color:SMOKE,lineHeight:1.6 }}>{n.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Tech categories */}
-              {sec.tech && (
-                <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:1,background:"rgba(255,255,255,.06)" }}>
-                  {sec.tech.map((t,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"20px 22px" }}>
-                      <div style={{ fontFamily:"'Syne',sans-serif",fontSize:13,fontWeight:700,color:VOLT,marginBottom:10,paddingBottom:8,borderBottom:"1px solid rgba(0,229,137,.15)" }}>{t.cat}</div>
-                      {t.items.map((item,k)=>(
-                        <div key={k} style={{ display:"flex",alignItems:"flex-start",gap:8,fontSize:12,color:SMOKE,marginBottom:6,lineHeight:1.45 }}>
-                          <span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:1 }}>·</span>{item}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Bullet list */}
-              {sec.list && (
-                <ul style={{ listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:9,marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.list.map((item,j)=>(
-                    <li key={j} style={{ display:"flex",alignItems:"flex-start",gap:12,fontSize:14,color:SMOKE,lineHeight:1.65 }}>
-                      <span style={{ color:VOLT,fontWeight:700,flexShrink:0,marginTop:2 }}>▸</span>{item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* Checklist */}
-              {sec.checklist && (
-                <div style={{ display:"flex",flexDirection:"column",gap:1,background:"rgba(255,255,255,.06)",marginBottom: sec.callout ? 16 : 0 }}>
-                  {sec.checklist.map((item,j)=>(
-                    <div key={j} style={{ background:INK3,padding:"13px 20px",display:"flex",alignItems:"center",gap:14 }}>
-                      <div style={{ width:24,height:24,borderRadius:"50%",background:"rgba(0,229,137,.1)",border:"1px solid rgba(0,229,137,.28)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:11,color:VOLT,fontWeight:700 }}>✓</div>
-                      <span style={{ fontSize:13,color:"white",lineHeight:1.4 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Callout */}
-              {sec.callout && (
-                <div style={{ padding:"15px 20px",background:"rgba(0,229,137,.07)",border:"1px solid rgba(0,229,137,.22)",fontSize:14,fontWeight:600,color:VOLT,fontFamily:"'Syne',sans-serif",lineHeight:1.55 }}>
-                  {sec.callout}
-                </div>
-              )}
-
-            </div>
-          ))}
-
-          {/* Article footer CTA */}
-          <div style={{ background:VOLT,padding:"28px 48px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap" }}>
-            <div>
-              <div style={{ fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:800,color:INK,letterSpacing:"-.02em" }}>
-                ¿Su planta está lista para energías renovables?
-              </div>
-              <div style={{ fontSize:13,color:"rgba(6,16,30,.62)",marginTop:4,lineHeight:1.5 }}>
-                CySlean Consultoría y Soporte realiza el estudio de factibilidad técnica y financiera en 5 días hábiles.
-              </div>
-            </div>
-            <button onClick={scrollContact}
-              style={{ display:"inline-flex",alignItems:"center",gap:8,background:INK,color:VOLT,fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:"13px 26px",border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"background .2s,transform .2s" }}
-              onMouseEnter={e=>{e.currentTarget.style.background=INK3;e.currentTarget.style.transform="translateY(-1px)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background=INK;e.currentTarget.style.transform="none";}}>
-              ☀️ Solicitar Estudio de Factibilidad
-            </button>
+        <div>{art.data.sections.map(renderSection)}</div>
+        <div style={{ background:VOLT,padding:"26px 46px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:18,flexWrap:"wrap" }}>
+          <div>
+            <div style={{ fontFamily:"'Syne',sans-serif",fontSize:16,fontWeight:800,color:INK,letterSpacing:"-.02em" }}>{art.cta}</div>
+            <div style={{ fontSize:13,color:"rgba(6,16,30,.6)",marginTop:3,lineHeight:1.5 }}>CySlean Consultoría y Soporte — respuesta en menos de 24 horas.</div>
           </div>
+          <button onClick={go} style={{ display:"inline-flex",alignItems:"center",gap:8,background:INK,color:VOLT,fontFamily:"'Syne',sans-serif",fontSize:12,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:"12px 24px",border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"background .2s,transform .2s" }} onMouseEnter={e=>{e.currentTarget.style.background=INK3;e.currentTarget.style.transform="translateY(-1px)"}} onMouseLeave={e=>{e.currentTarget.style.background=INK;e.currentTarget.style.transform="none"}}>{art.ctaBtn}</button>
         </div>
       </div>
     </div>
   );
 }
 
-
 function Blog() {
   const [hov, setHov] = useState(null);
-  const [articleOpen, setArticleOpen] = useState(false);
-  const [bessOpen, setBessOpen] = useState(false);
-  const [sgOpen, setSgOpen] = useState(false);
-  const [subOpen, setSubOpen] = useState(false);
-  const [erOpen, setErOpen] = useState(false);
+  const [openArt, setOpenArt] = useState(null);
   return (
     <>
-      {articleOpen && <ArticleModal onClose={()=>setArticleOpen(false)} />}
-      {bessOpen && <BESSModal onClose={()=>setBessOpen(false)} />}
-      {sgOpen && <SmartGridModal onClose={()=>setSgOpen(false)} />}
-      {subOpen && <SubestacionesModal onClose={()=>setSubOpen(false)} />}
-      {erOpen && <ERModal onClose={()=>setErOpen(false)} />}
+      {openArt && <ArticleModal type={openArt} onClose={()=>setOpenArt(null)} />}
       <section id="blog" style={{ padding:"130px 0",background:INK }}>
         <div style={{ maxWidth:1240,margin:"0 auto",padding:"0 32px" }}>
           <Fade>
@@ -2764,7 +1681,7 @@ function Blog() {
             {POSTS.map((p,i)=>(
               <div key={i}
                 onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)}
-                onClick={()=>{ if(p.feat) setArticleOpen(true); if(p.bess) setBessOpen(true); if(p.sg) setSgOpen(true); if(p.sub) setSubOpen(true); if(p.er) setErOpen(true); }}
+                onClick={()=>{ if(p.feat) setOpenArt("fp"); if(p.bess) setOpenArt("bess"); if(p.sg) setOpenArt("sg"); if(p.sub) setOpenArt("sub"); if(p.er) setOpenArt("er"); }}
                 style={{ background: hov===i ? INK2 : INK,padding:40,transition:"background .3s",gridRow: p.feat ? "span 2" : "auto",display:"flex",flexDirection:"column",cursor: (p.feat||p.bess||p.sg||p.sub||p.er) ? "pointer" : "default" }}>
                 <div style={{ fontFamily:"\'Martian Mono\',monospace",fontSize:9,letterSpacing:".14em",color:VOLT,textTransform:"uppercase",marginBottom:16 }}>{p.cat}</div>
                 <div style={{ fontFamily:"\'Syne\',sans-serif",fontSize: p.feat ? 28 : 20,fontWeight:700,lineHeight:1.2,marginBottom:12,letterSpacing:"-.02em" }}>{p.title}</div>
@@ -2813,7 +1730,56 @@ function Blog() {
 ══════════════════════════════════════════ */
 function Contacto() {
   const [form, setForm] = useState({ empresa:"", nombre:"", contacto:"", demanda:"", servicio:"" });
+  const [status, setStatus] = useState(null); // null | "sending" | "ok" | "error"
   const upd = k => e => setForm(f=>({...f,[k]:e.target.value}));
+
+  const handleSubmit = async () => {
+    const { empresa, nombre, contacto, demanda, servicio } = form;
+    if (!empresa || !nombre || !contacto) { setStatus("error"); return; }
+    setStatus("sending");
+    try {
+      const body = [
+        `Empresa: ${empresa}`,
+        `Nombre y Cargo: ${nombre}`,
+        `Contacto: ${contacto}`,
+        `Demanda eléctrica: ${demanda || "No especificada"}`,
+        `Servicio de interés: ${servicio || "No especificado"}`,
+      ].join("\n");
+
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+          model:"claude-sonnet-4-20250514",
+          max_tokens:256,
+          messages:[{
+            role:"user",
+            content:`Eres un asistente de CySlean Consultoría y Soporte. Redacta un correo breve de confirmación para enviar al prospecto que acaba de solicitar un Diagnóstico Energético. Datos del prospecto:\n\n${body}\n\nEl correo debe ser profesional, en español, mencionar que el equipo de CySlean se pondrá en contacto en menos de 24 horas a través de direccion@cyslean.com o los teléfonos 333 009 1276 / 771 661 2061. Responde SOLO con el cuerpo del correo, sin asunto ni formato extra.`
+          }]
+        })
+      });
+      const data = await res.json();
+      const reply = data?.content?.[0]?.text || "";
+
+      // Send via mailto as fallback (opens email client with prefilled content)
+      const subject = encodeURIComponent(`Solicitud de Diagnóstico Energético — ${empresa}`);
+      const mailBody = encodeURIComponent(
+        `NUEVA SOLICITUD DE DIAGNÓSTICO ENERGÉTICO\n${"─".repeat(40)}\n\n${body}\n\n${"─".repeat(40)}\nEnviado desde: cyslean.com`
+      );
+      window.location.href = `mailto:direccion@cyslean.com?subject=${subject}&body=${mailBody}`;
+      setStatus("ok");
+      setForm({ empresa:"", nombre:"", contacto:"", demanda:"", servicio:"" });
+    } catch(e) {
+      // Fallback: direct mailto even on error
+      const subject = encodeURIComponent(`Solicitud de Diagnóstico Energético — ${form.empresa}`);
+      const mailBody = encodeURIComponent(
+        `NUEVA SOLICITUD DE DIAGNÓSTICO ENERGÉTICO\n${"─".repeat(40)}\n\nEmpresa: ${form.empresa}\nNombre: ${form.nombre}\nContacto: ${form.contacto}\nDemanda: ${form.demanda}\nServicio: ${form.servicio}\n\nEnviado desde: cyslean.com`
+      );
+      window.location.href = `mailto:direccion@cyslean.com?subject=${subject}&body=${mailBody}`;
+      setStatus("ok");
+    }
+  };
+
   return (
     <section id="contacto" style={{ padding:"130px 0",background:INK2,position:"relative",overflow:"hidden" }}>
       <div style={{ position:"absolute",right:-200,top:"50%",transform:"translateY(-50%)",width:580,height:580,borderRadius:"50%",background:"radial-gradient(circle,rgba(0,87,255,.07) 0%,transparent 70%)",pointerEvents:"none" }}/>
@@ -2873,12 +1839,15 @@ function Contacto() {
                   </select>
                 </div>
               ))}
-              <button style={{ width:"100%",background:VOLT,color:INK,fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:17,border:"none",cursor:"pointer",marginTop:6,transition:"background .2s,transform .2s" }}
-                onMouseEnter={e=>{e.currentTarget.style.background="#00f094";e.currentTarget.style.transform="translateY(-1px)"}}
-                onMouseLeave={e=>{e.currentTarget.style.background=VOLT;e.currentTarget.style.transform="none"}}>
-                ⚡ Solicitar Diagnóstico Energético
+              <button onClick={handleSubmit} disabled={status==="sending"}
+                style={{ width:"100%",background:status==="ok"?"#00b870":VOLT,color:INK,fontFamily:"'Syne',sans-serif",fontSize:14,fontWeight:700,letterSpacing:".07em",textTransform:"uppercase",padding:17,border:"none",cursor:status==="sending"?"wait":"pointer",marginTop:6,transition:"background .2s,transform .2s",opacity:status==="sending"?.7:1 }}
+                onMouseEnter={e=>{if(status!=="sending"){e.currentTarget.style.background="#00f094";e.currentTarget.style.transform="translateY(-1px)";}}}
+                onMouseLeave={e=>{e.currentTarget.style.background=status==="ok"?"#00b870":VOLT;e.currentTarget.style.transform="none";}}>
+                {status==="sending"?"⏳ Enviando...":status==="ok"?"✅ ¡Solicitud enviada!":"⚡ Solicitar Diagnóstico Energético"}
               </button>
-              <div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,color:SMOKE,textAlign:"center",marginTop:10,letterSpacing:".06em" }}>Respuesta en menos de 24 horas</div>
+              {status==="error"&&<div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,color:"#ff6b6b",textAlign:"center",marginTop:8,letterSpacing:".06em" }}>Por favor completa empresa, nombre y contacto.</div>}
+              {status==="ok"&&<div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,color:VOLT,textAlign:"center",marginTop:8,letterSpacing:".06em" }}>Nos pondremos en contacto en menos de 24 horas.</div>}
+              {!status&&<div style={{ fontFamily:"'Martian Mono',monospace",fontSize:10,color:SMOKE,textAlign:"center",marginTop:10,letterSpacing:".06em" }}>Respuesta en menos de 24 horas</div>}
             </div>
           </Fade>
         </div>
@@ -2970,7 +1939,7 @@ const globalCSS = `
 function useActiveSection() {
   const [active, setActive] = useState("hero");
   useEffect(() => {
-    const sections = ["hero","servicios","smartgrid","energias","codigored","casos","blog","contacto"];
+    const sections = ["hero","servicios","smartgrid","codigored","casos","blog","contacto"];
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
     }, { threshold: 0.3 });
@@ -2992,7 +1961,6 @@ export default function App() {
       <Servicios />
       <Metricas />
       <SmartGrid />
-      <EnergiasLimpias />
       <CodigoRed />
       <DiagnosticoCTA />
       <Casos />
