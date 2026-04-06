@@ -1,7 +1,13 @@
-import CySleanApp from './CySleanApp';  
-  
-function App() {  
-  return <CySleanApp />;  
-}  
-  
-export default App; 
+import CySleanApp from './CySleanApp';
+import WhatsAppButton from './components/WhatsAppButton';
+
+function App() {
+  return (
+    <>
+      <CySleanApp />
+      <WhatsAppButton />
+    </>
+  );
+}
+
+export default App;
