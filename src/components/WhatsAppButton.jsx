@@ -45,11 +45,11 @@ function WhatsAppButtonContent() {
         @keyframes wa-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(37,211,102,0.5); } 50% { box-shadow:0 0 0 14px rgba(37,211,102,0); } }
         @keyframes bubble-in { from { opacity:0; transform:translateX(12px) scale(0.92); } to { opacity:1; transform:translateX(0) scale(1); } }
         @keyframes msg-fade { 0% { opacity:0; transform:translateY(4px); } 15% { opacity:1; transform:translateY(0); } 85% { opacity:1; } 100% { opacity:0; transform:translateY(-4px); } }
-        .wa-btn { position:fixed !important; bottom:24px !important; right:24px !important; z-index:2147483647 !important; width:58px; height:58px; border-radius:50%; background:#25D366; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; animation:wa-enter 0.4s cubic-bezier(0.34,1.56,0.64,1) both; transition:transform 0.15s ease,background 0.15s ease; }
+        .wa-btn { position:fixed !important; bottom:24px !important; right:16px !important; z-index:2147483647 !important; width:58px; height:58px; border-radius:50%; background:#25D366; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; animation:wa-enter 0.4s cubic-bezier(0.34,1.56,0.64,1) both; transition:transform 0.15s ease,background 0.15s ease; }
         .wa-btn:hover { background:#1ebe5d; transform:scale(1.08); }
         .wa-btn:active { transform:scale(0.95); }
         .wa-btn.pulsing { animation:wa-enter 0.4s cubic-bezier(0.34,1.56,0.64,1) both, wa-pulse 1.8s ease-in-out 0.4s 4; }
-        .wa-bubble { position:fixed !important; bottom:34px !important; right:90px !important; z-index:2147483646 !important; background:#fff; border-radius:12px 12px 2px 12px; padding:10px 14px; max-width:220px; box-shadow:0 4px 20px rgba(0,0,0,0.13); animation:bubble-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both; border:1px solid rgba(0,0,0,0.07); }
+        .wa-bubble { position:fixed !important; bottom:90px !important; right:16px !important; z-index:2147483646 !important; background:#fff; border-radius:12px 12px 2px 12px; padding:10px 14px; max-width:220px; box-shadow:0 4px 20px rgba(0,0,0,0.13); animation:bubble-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both; border:1px solid rgba(0,0,0,0.07); }
         .wa-bubble::after { content:""; position:absolute; bottom:10px; right:-8px; width:0; height:0; border-top:8px solid transparent; border-bottom:0 solid transparent; border-left:8px solid #fff; }
         .wa-bubble-label { font-size:11px; font-weight:600; color:#25D366; margin-bottom:4px; text-transform:uppercase; font-family:system-ui,sans-serif; }
         .wa-bubble-msg { font-size:13px; color:#222; font-family:system-ui,sans-serif; line-height:1.4; animation:msg-fade 3s ease both; }
